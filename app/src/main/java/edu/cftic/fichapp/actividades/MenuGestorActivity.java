@@ -77,14 +77,14 @@ public class MenuGestorActivity extends AppCompatActivity {
 
     public void plantilla(View view) {
         Intent intent = new Intent(this, CreatePdfActivity.class);
-        intent.putExtra("EMPLEADO",u);
+        intent.putExtra("empresa",u.getEmpresa());
         startActivity(intent);
     }
 
     public void email(View view) {
         //TODO saltarc a mandar email
         Intent intent = new Intent(this, CreatePdfActivity.class);
-        intent.putExtra("EMPLEADO",u);
+        intent.putExtra("empresa",u.getEmpresa());
         startActivity(intent);
     }
 

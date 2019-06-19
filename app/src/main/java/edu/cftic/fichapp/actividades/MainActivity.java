@@ -67,7 +67,7 @@ public class MainActivity extends AppCompatActivity {
 
                     lanzarActividad(RegistroEmpresaActivity.class);
                 } else { //hay empresa
-                    if (!hayGestor())
+                    if (hayGestor())
                     {//no hay gestor
                         lanzarActividad(RegistroEmpleadoActivity.class);
                     } else //hay empresa y gestor

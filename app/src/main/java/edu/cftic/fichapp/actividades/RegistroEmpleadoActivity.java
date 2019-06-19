@@ -218,9 +218,9 @@ public class RegistroEmpleadoActivity extends AppCompatActivity {
 
 
                             if (radioButtonGestor.isChecked() == true) {
-                                empleado.setRol("gestor");
+                                empleado.setRol(Constantes.ROL_GESTOR);
                             } else {
-                                empleado.setRol("empleado");
+                                empleado.setRol(Constantes.ROL_EMPLEADO);
                             }
                             return true;
 

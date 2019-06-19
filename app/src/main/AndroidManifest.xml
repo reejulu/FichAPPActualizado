@@ -17,6 +17,7 @@
             android:label="Modicar Plantilla "></activity>
         <activity android:name=".actividades.ConsultaFichajeActivity"
             android:label="Consulta Fichaje"/>
+
         <activity
             android:name=".actividades.Creditos"
             android:label="Créditos" />
@@ -48,6 +49,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".pdf.CreatePdfActivity"
+            android:label="Crear PDF"/>
+        <activity android:name=".actividades.RegistroEntradaSalida"
+            android:label="Entrada Salida"/>
     </application>
 
 </manifest>

@@ -82,8 +82,8 @@ public class LoginActivity extends AppCompatActivity  {
         }
 
         Intent intent = null;
-
-        if (u.getRol()== Constantes.ROL_EMPLEADO ){
+           String rol = u.getRol();
+        if (u.getRol().equals(Constantes.ROL_EMPLEADO) ){
 
              intent = new Intent(this,MenuEmpleadoActivity.class);
              intent.putExtra("ID_EMPLEADO",u.getId_empleado());
@@ -91,7 +91,7 @@ public class LoginActivity extends AppCompatActivity  {
 
 
 
-        }else if(u.getRol()==Constantes.ROL_GESTOR ){
+        }else if(u.getRol().equals(Constantes.ROL_GESTOR) ){
 
              intent = new Intent(this,MenuGestorActivity.class);
              intent.putExtra("ID_EMPLEADO",u.getId_empleado());
