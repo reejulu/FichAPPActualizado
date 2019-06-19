@@ -10,6 +10,8 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+
 import edu.cftic.fichapp.R;
 import edu.cftic.fichapp.bean.Empleado;
 import edu.cftic.fichapp.bean.Empresa;
@@ -20,33 +22,8 @@ public class LoginActivity extends AppCompatActivity  {
 
     EditText usuario;
     EditText contraseña;
-    ImageView logo;
-
-    private Empleado hayGestor() {
-        Empleado empleado = null;
-
-        empleado = DB.empleados.getGestor();
 
 
-        return empleado;
-    }
-
-    private boolean hayEmpresa() {
-        boolean b = false;
-
-        Empresa empresa = DB.empresas.primero();
-        if (empresa != null) {
-            b = true;
-        }
-
-        return b;
-    }
-
-    private void lanzarActividad(Class actividad_destino) {
-        Intent i = new Intent(this, actividad_destino);
-        startActivity(i);
-        finish();
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,26 +34,18 @@ public class LoginActivity extends AppCompatActivity  {
 
             lanzarActividad(RegistroEmpresaActivity.class);
         } else { //hay empresa
-            if (null == hayGestor())
+            if (!hayGestor())
             {//no hay gestor
                 lanzarActividad(RegistroEmpleadoActivity.class);
             }  //hay empresa y gestor
-            //siguo en el login
+            //sigo en el login
         }
 
         usuario = findViewById(R.id.usuario);
         contraseña = findViewById(R.id.contraseña);
 
-//TODO recoger la empresa y setear el logo en el login
-        logo = findViewById(R.id.imagen_logo);
-        Empresa empresa = null;
-        empresa = DB.empresas.ultimo();
-        if (empresa != null){
-            String rutalogo = empresa.getRutalogo();
-            logo.setImageURI(Uri.parse(rutalogo));
-        }
 
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
     }
 
@@ -102,7 +71,7 @@ public class LoginActivity extends AppCompatActivity  {
         Empleado u = DB.empleados.getEmpleadoUsuarioClave(nombre,cont);
         //Valida
         //Validador validador
-        if(u==null){
+        if(u.getId_empleado() == 0){
 
             TextView incorrecto = findViewById(R.id.incorrecto);
 
@@ -155,5 +124,32 @@ public class LoginActivity extends AppCompatActivity  {
         finish();
 
     }
+
+    private Boolean hayGestor() {
+       ArrayList<Empleado> empleado = null;
+
+        empleado = (ArrayList<Empleado>) DB.empleados.getRol(Constantes.ROL_GESTOR);
+
+
+        return empleado.size()>0;
+    }
+
+    private boolean hayEmpresa() {
+        boolean b = false;
+
+        Empresa empresa = DB.empresas.primero();
+        if (empresa != null) {
+            b = true;
+        }
+
+        return b;
+    }
+
+    private void lanzarActividad(Class actividad_destino) {
+        Intent i = new Intent(this, actividad_destino);
+        startActivity(i);
+        finish();
+    }
+
 }
 

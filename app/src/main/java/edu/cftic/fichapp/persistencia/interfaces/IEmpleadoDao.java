@@ -11,10 +11,13 @@ public interface IEmpleadoDao {
     public Empleado primero();
     public Empleado ultimo();
     public List<String> getRoles();
+
+    List<Empleado> getRol(String rol);
+
     public Empleado getEmpleadoUsuarioClave(String usuario, String clave);
     public boolean nuevo(Empleado e);
     public boolean eliminar(int id_empleado);
     public boolean actualizar(Empleado e);
     public boolean baja(Empleado e);
-    public Empleado getGestor ();
+
 }

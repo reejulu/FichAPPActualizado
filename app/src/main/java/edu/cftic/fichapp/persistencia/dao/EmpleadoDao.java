@@ -7,7 +7,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,6 +14,12 @@ import edu.cftic.fichapp.bean.Empleado;
 import edu.cftic.fichapp.persistencia.DB;
 import edu.cftic.fichapp.persistencia.esquemas.IEmpleadoEsquema;
 import edu.cftic.fichapp.persistencia.interfaces.IEmpleadoDao;
+
+import static edu.cftic.fichapp.persistencia.esquemas.IEmpleadoEsquema.E_COL_BAJA;
+import static edu.cftic.fichapp.persistencia.esquemas.IEmpleadoEsquema.E_COL_CLAVE;
+import static edu.cftic.fichapp.persistencia.esquemas.IEmpleadoEsquema.E_COL_ID_EMPRESA;
+import static edu.cftic.fichapp.persistencia.esquemas.IEmpleadoEsquema.E_COL_ROL;
+import static edu.cftic.fichapp.persistencia.esquemas.IEmpleadoEsquema.E_COL_USUARIO;
 
 public class EmpleadoDao extends CRUD implements IEmpleadoEsquema, IEmpleadoDao {
 
@@ -104,6 +109,23 @@ public class EmpleadoDao extends CRUD implements IEmpleadoEsquema, IEmpleadoDao 
     }
 
     @Override
+    public List<Empleado> getRol(String rol) {
+        final String argumentos[] = { rol };
+        final String seleccion = E_COL_ROL + " = ? " ;
+        List<Empleado> e = new ArrayList<>();
+        cursor = super.query(E_TABLA, E_COLUMNAS, seleccion, argumentos);
+        if(cursor != null){
+            cursor.moveToFirst();
+            while (!cursor.isAfterLast()){
+                e.add( cursorATabla(cursor));
+                cursor.moveToNext();
+            }
+            cursor.close();
+        }
+        return e;
+    }
+
+    @Override
     public Empleado getEmpleadoUsuarioClave(String usuario, String clave) {
         final String argumentos[] = { usuario, clave };
         final String seleccion = E_COL_USUARIO + " = ? AND " + E_COL_CLAVE + " = ?";
@@ -189,13 +211,7 @@ public class EmpleadoDao extends CRUD implements IEmpleadoEsquema, IEmpleadoDao 
     }
 
     @Override
-    public Empleado getGestor() {
-        return null;
-    }
-
-    @Override
     protected Empleado cursorATabla(Cursor cursor) {
-
         Empleado e = new Empleado();
         int id_empleadoIndex;
         int nombreIndex;
@@ -229,7 +245,7 @@ public class EmpleadoDao extends CRUD implements IEmpleadoEsquema, IEmpleadoDao 
             bajaIndex = cursor.getColumnIndexOrThrow(E_COL_BAJA);
             e.setBaja( cursor.getInt(bajaIndex) == 0);
         }
-       if(cursor.getColumnIndex(E_COL_ID_EMPRESA) != -1){
+        if(cursor.getColumnIndex(E_COL_ID_EMPRESA) != -1){
             id_empresaIndex = cursor.getColumnIndexOrThrow(E_COL_ID_EMPRESA);
             e.setEmpresa( DB.empresas.getEmpresaId( cursor.getInt(id_empresaIndex)));
         }

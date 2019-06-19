@@ -5,23 +5,26 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.CheckBox;
 
+import java.util.ArrayList;
+
 import edu.cftic.fichapp.R;
 import edu.cftic.fichapp.bean.Empleado;
 import edu.cftic.fichapp.bean.Empresa;
 import edu.cftic.fichapp.persistencia.DB;
+import edu.cftic.fichapp.util.Constantes;
 import edu.cftic.fichapp.util.Preferencias;
 
 public class MainActivity extends AppCompatActivity {
 
     private CheckBox checkBox;
 
-    private Empleado hayGestor() {
-        Empleado empleado = null;
+    private Boolean hayGestor() {
+        ArrayList<Empleado> empleado = null;
 
-        empleado = DB.empleados.getGestor();
+        empleado = (ArrayList<Empleado>) DB.empleados.getRol(Constantes.ROL_GESTOR);
 
 
-        return empleado;
+        return empleado.size()>0;
     }
 
     private boolean hayEmpresa() {
@@ -57,13 +60,14 @@ public class MainActivity extends AppCompatActivity {
                 checkBox = findViewById(R.id.no_mostrar);
             if (!Preferencias.isCheck(this, checkBox)) {
                 lanzarActividad(AyudaActivity.class);
+
             } else { //ayuda desactivada
 
                 if (!hayEmpresa()) {
 
                     lanzarActividad(RegistroEmpresaActivity.class);
                 } else { //hay empresa
-                    if (null == hayGestor())
+                    if (!hayGestor())
                     {//no hay gestor
                         lanzarActividad(RegistroEmpleadoActivity.class);
                     } else //hay empresa y gestor
