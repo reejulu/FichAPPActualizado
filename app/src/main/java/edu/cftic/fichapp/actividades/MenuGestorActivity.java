@@ -20,7 +20,7 @@ public class MenuGestorActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu_gestor);
-        //u = (Empleado) getIntent().getExtras().get(Constantes.EMPLEADO);
+        u = (Empleado) getIntent().getExtras().get(Constantes.EMPLEADO);
 
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);

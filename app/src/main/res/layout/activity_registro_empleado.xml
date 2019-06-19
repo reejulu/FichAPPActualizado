@@ -5,173 +5,196 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="10dp"
-    android:id="@+id/empleado_root"
-    android:orientation="vertical"
-    tools:context=".actividades.RegistroEmpleadoActivity">
+    android:background="@color/backgroundcolor">
 
 
-    <android.support.design.widget.TextInputLayout
-        android:id="@+id/tilcajanombre"
+    <android.support.v7.widget.CardView
+
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
-        android:layout_marginBottom="10dp">
+        android:layout_height="match_parent"
+        android:layout_margin="10dp"
+        android:elevation="8dp"
+        app:cardCornerRadius="16dp">
+        <LinearLayout
 
-        <EditText
-            android:id="@+id/cajanombre"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:hint="Nombre"
-            android:inputType="text"
-            android:tag="tagnombre"/>
-
-    </android.support.design.widget.TextInputLayout>
-
-    <android.support.design.widget.TextInputLayout
-        android:id="@+id/tilcajaapellidos"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
-        android:layout_marginBottom="10dp">
-
-        <EditText
-            android:id="@+id/cajaapellidos"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Apellidos"
-            android:inputType="text"
-            android:tag="tagapellidos"/>
-    </android.support.design.widget.TextInputLayout>
-
-    <android.support.design.widget.TextInputLayout
-        android:id="@+id/tilcajausername"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/tilcajaapellidos"
-        app:passwordToggleEnabled="true"
-        android:layout_marginTop="10dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
-        android:layout_marginBottom="10dp">
-
-        <EditText
-            android:id="@+id/cajausername"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Username"
-            android:inputType="text"
-            android:tag="tagusername"/>
-
-    </android.support.design.widget.TextInputLayout>
-
-    <android.support.design.widget.TextInputLayout
-        android:id="@+id/tilcajacontraseña"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/tilcajausername"
-        app:passwordToggleEnabled="true"
-        android:layout_marginTop="10dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
-        android:layout_marginBottom="10dp">
-
-        <EditText
-            android:id="@+id/cajacontraseña"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Contraseña"
-            android:inputType="textPassword"
-            android:tag="tagcontraseña"/>
-
-    </android.support.design.widget.TextInputLayout>
+            android:padding="5dp"
+            android:backgroundTint="@color/backgroundcolor"
+            android:background="@drawable/fonfologininferior"
+            android:id="@+id/empleado_root"
+            android:orientation="vertical"
+            tools:context=".actividades.RegistroEmpleadoActivity">
 
 
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/tilcajanombre"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginBottom="10dp">
 
-    <android.support.design.widget.TextInputLayout
-        android:id="@+id/tilrepcontraseña"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/tilcajacontraseña"
-        app:passwordToggleEnabled="true"
-        android:layout_marginTop="10dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
-        android:layout_marginBottom="10dp">
+                <EditText
+                    android:id="@+id/cajanombre"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Nombre"
+                    android:inputType="text"
+                    android:tag="tagnombre"/>
 
+            </android.support.design.widget.TextInputLayout>
 
-        <EditText
-            android:id="@+id/cajarepcontraseña"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Repite la contraseña"
-            android:inputType="textPassword"
-            android:tag="tagrepcontraseña"/>
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/tilcajaapellidos"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginBottom="10dp">
 
-    </android.support.design.widget.TextInputLayout>
+                <EditText
+                    android:id="@+id/cajaapellidos"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Apellidos"
+                    android:inputType="text"
+                    android:tag="tagapellidos"/>
+            </android.support.design.widget.TextInputLayout>
 
-    <RadioGroup
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginRight="16dp"
-        android:layout_marginBottom="10dp"
-        android:orientation="horizontal">
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/tilcajausername"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tilcajaapellidos"
+                app:passwordToggleEnabled="true"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginBottom="10dp">
 
-        <RadioButton
-            android:id="@+id/radioButtongestor"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Gestor"
-            />
+                <EditText
+                    android:id="@+id/cajausername"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Username"
+                    android:inputType="text"
+                    android:tag="tagusername"/>
 
-        <RadioButton
-            android:id="@+id/radioButtonempleado"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Empleado" />
+            </android.support.design.widget.TextInputLayout>
 
-    </RadioGroup>
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/tilcajacontraseña"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tilcajausername"
+                app:passwordToggleEnabled="true"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginBottom="10dp">
 
-    <Button
-        android:id="@+id/buttonRegistrar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="16dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginRight="16dp"
-        android:layout_marginBottom="10dp"
-        android:text="REGISTRAR"
-        android:onClick="registrarUsuario"/>
+                <EditText
+                    android:id="@+id/cajacontraseña"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Contraseña"
+                    android:inputType="textPassword"
+                    android:tag="tagcontraseña"/>
 
-    <Button
-        android:id="@+id/buttonModificar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="16dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginRight="16dp"
-        android:layout_marginBottom="10dp"
-        android:text="MODIFICAR"
-        android:onClick="modificarUsuario"/>
-
-    <Button
-        android:id="@+id/buttonEliminar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="16dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginRight="16dp"
-        android:layout_marginBottom="10dp"
-        android:text="ELIMINAR"
-        android:onClick="eliminarUsuario"/>
+            </android.support.design.widget.TextInputLayout>
 
 
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/tilrepcontraseña"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tilcajacontraseña"
+                app:passwordToggleEnabled="true"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginBottom="10dp">
+
+
+                <EditText
+                    android:id="@+id/cajarepcontraseña"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Repite la contraseña"
+                    android:inputType="textPassword"
+                    android:tag="tagrepcontraseña"/>
+
+            </android.support.design.widget.TextInputLayout>
+
+            <RadioGroup
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginBottom="10dp"
+                android:orientation="horizontal">
+
+                <RadioButton
+                    android:id="@+id/radioButtongestor"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Gestor"
+                    />
+
+                <RadioButton
+                    android:id="@+id/radioButtonempleado"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Empleado" />
+
+            </RadioGroup>
+
+            <Button
+                android:id="@+id/buttonRegistrar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/formaboton1"
+                android:text="REGISTRAR"
+                android:onClick="registrarUsuario"/>
+
+            <Button
+                android:id="@+id/buttonModificar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/formaboton1"
+                android:text="MODIFICAR"
+                android:onClick="modificarUsuario"/>
+
+            <Button
+                android:id="@+id/buttonEliminar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/formaboton1"
+                android:text="ELIMINAR"
+                android:onClick="eliminarUsuario"/>
+
+
+
+
+        </LinearLayout>
+    </android.support.v7.widget.CardView>
 </LinearLayout>
