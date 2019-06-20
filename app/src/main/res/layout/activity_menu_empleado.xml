@@ -1,7 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-xmlns:app="http://schemas.android.com/apk/res-auto"
-xmlns:tools="http://schemas.android.com/tools"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
+
+<LinearLayout
 android:id="@+id/menuEmpleadoActivity"
 android:layout_width="match_parent"
 android:layout_height="match_parent"
@@ -14,7 +19,7 @@ tools:context=".actividades.MenuEmpleadoActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="100dp"
+        android:layout_height="60dp"
         android:orientation="horizontal"
         android:gravity="center_horizontal|center_vertical"
         android:layout_marginRight="10dp"
@@ -73,7 +78,7 @@ tools:context=".actividades.MenuEmpleadoActivity">
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="2dp"
-                    android:layout_margin="10dp"
+                    android:layout_margin="6dp"
                     android:background="@color/lightgray" />
 
                 <TextView
@@ -123,7 +128,7 @@ tools:context=".actividades.MenuEmpleadoActivity">
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="2dp"
-                    android:layout_margin="10dp"
+                    android:layout_margin="6dp"
                     android:background="@color/lightgray" />
 
                 <TextView
@@ -140,3 +145,4 @@ tools:context=".actividades.MenuEmpleadoActivity">
     </LinearLayout>
 
 </LinearLayout>
+</ScrollView>

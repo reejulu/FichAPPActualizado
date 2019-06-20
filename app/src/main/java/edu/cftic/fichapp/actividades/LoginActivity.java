@@ -45,7 +45,7 @@ public class LoginActivity extends AppCompatActivity  {
         contraseña = findViewById(R.id.contraseña);
 
 
-        //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
     }
 
