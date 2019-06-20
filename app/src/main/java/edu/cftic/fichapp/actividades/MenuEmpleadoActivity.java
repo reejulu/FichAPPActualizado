@@ -30,26 +30,23 @@ public class MenuEmpleadoActivity extends AppCompatActivity {
         return true;
     }
 
-    @Override
-    public boolean onContextItemSelected(MenuItem item) {
 
-        int id = item.getItemId();
-        if(id== R.id.ayuda){
-            Intent about = new Intent(this, AyudaActivity.class);
-            startActivity(about);
-            return true;
 
-        }
 
-        return super.onContextItemSelected(item);
-    }
 
     //creamos este metodo para que el ActionBar(la flecha hacia atras) funcione bien
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home){
             finish();
-            return true;
+
+        } else if (item.getItemId()==R.id.ayuda)
+        {
+            Intent intent = new  Intent(this, AyudaActivity.class);
+            intent.putExtra("vengo_de_menu", true);
+            startActivity(intent);
+
+
         }
 
         return super.onOptionsItemSelected(item);

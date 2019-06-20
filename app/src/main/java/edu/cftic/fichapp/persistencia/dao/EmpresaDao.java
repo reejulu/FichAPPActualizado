@@ -51,8 +51,9 @@ public class EmpresaDao extends CRUD implements IEmpresaEsquema, IEmpresaDao {
                 empresaLista.add(e);
                 cursor.moveToNext();
             }
+            cursor.close();
         }
-        cursor.close();
+
         return empresaLista;
     }
 
@@ -64,8 +65,8 @@ public class EmpresaDao extends CRUD implements IEmpresaEsquema, IEmpresaDao {
         if(cursor != null && cursor.getCount()>0){
             cursor.moveToFirst();
             e = cursorATabla(cursor);
+            cursor.close();
         }
-        cursor.close();
         return e;
     }
 
@@ -77,8 +78,8 @@ public class EmpresaDao extends CRUD implements IEmpresaEsquema, IEmpresaDao {
         if(cursor != null && cursor.getCount() > 0){
             cursor.moveToFirst();
             e = cursorATabla(cursor);
+            cursor.close();
         }
-        cursor.close();
         return e;
     }
 

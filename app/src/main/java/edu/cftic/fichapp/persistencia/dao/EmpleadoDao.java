@@ -58,8 +58,9 @@ public class EmpleadoDao extends CRUD implements IEmpleadoEsquema, IEmpleadoDao 
                 empleadoLista.add(e);
                 cursor.moveToNext();
             }
+            cursor.close();
         }
-        cursor.close();
+
         return empleadoLista;
     }
 
@@ -71,8 +72,9 @@ public class EmpleadoDao extends CRUD implements IEmpleadoEsquema, IEmpleadoDao 
         if(cursor != null){
             cursor.moveToFirst();
             e = cursorATabla(cursor);
+            cursor.close();
         }
-        cursor.close();
+
         return e;
     }
 
@@ -84,8 +86,9 @@ public class EmpleadoDao extends CRUD implements IEmpleadoEsquema, IEmpleadoDao 
         if(cursor != null){
             cursor.moveToFirst();
             e = cursorATabla(cursor);
+            cursor.close();
         }
-        cursor.close();
+
         return e;
     }
 
@@ -103,8 +106,9 @@ public class EmpleadoDao extends CRUD implements IEmpleadoEsquema, IEmpleadoDao 
                 }
                 cursor.moveToNext();
             }
+            cursor.close();
         }
-        cursor.close();
+
         return roles;
     }
 

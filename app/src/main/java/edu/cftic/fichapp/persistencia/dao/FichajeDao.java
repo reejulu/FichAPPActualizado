@@ -63,8 +63,9 @@ public class FichajeDao extends CRUD implements IFichajeDao, IFichajeEsquema {
                 fichajeLista.add(e);
                 cursor.moveToNext();
             }
+            cursor.close();
         }
-        cursor.close();
+
         return fichajeLista;
     }
 
@@ -83,8 +84,9 @@ public class FichajeDao extends CRUD implements IFichajeDao, IFichajeEsquema {
                 fichajeLista.add(e);
                 cursor.moveToNext();
             }
+            cursor.close();
         }
-        cursor.close();
+
         return fichajeLista;
     }
 
@@ -98,8 +100,9 @@ public class FichajeDao extends CRUD implements IFichajeDao, IFichajeEsquema {
         if(cursor != null){
             cursor.moveToFirst();
             f = cursorATabla(cursor);
+            cursor.close();
         }
-        cursor.close();
+
         return f;
     }
 

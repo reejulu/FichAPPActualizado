@@ -14,6 +14,8 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+
 import edu.cftic.fichapp.R;
 import edu.cftic.fichapp.bean.Empleado;
 import edu.cftic.fichapp.bean.Empresa;
@@ -91,29 +93,6 @@ public class RegistroEmpleadoActivity extends AppCompatActivity {
 
     }
 
-    public void logicaBotones() {
-
-        if (empleado == null) {
-            radioButtonGestor.setChecked(true);
-            radioGroup.getChildAt(1).setEnabled(false);
-            botonM.setEnabled(false);
-            botonE.setEnabled(false);
-            empleado = new Empleado();
-
-        } else {
-            mostrarDatos();
-
-            if (empleado.getRol().equals("empleado")) {
-                radioButtonEmpleado.setChecked(true);
-                radioButtonGestor.setChecked(false);
-
-            } else {
-                radioButtonEmpleado.setChecked(false);
-                radioButtonGestor.setChecked(true);
-            }
-            botonR.setEnabled(false);
-        }
-    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -288,6 +267,46 @@ public class RegistroEmpleadoActivity extends AppCompatActivity {
         cajausername.setText(empleado.getUsuario());
         cajacontraseña.setText(empleado.getClave());
         cajarepcontraseña = cajacontraseña;
+    }
+
+    private Boolean hayGestor() {
+        ArrayList<Empleado> empleado = null;
+
+        empleado = (ArrayList<Empleado>) DB.empleados.getRol(Constantes.ROL_GESTOR);
+
+
+        return empleado.size()>0;
+    }
+
+    public void logicaBotones() {
+
+        if (empleado == null) {
+            botonM.setEnabled(false);
+            botonE.setEnabled(false);
+            empleado = new Empleado();
+
+            if (!hayGestor()) {
+                radioButtonGestor.setChecked(true);
+                radioGroup.getChildAt(1).setEnabled(false);
+
+            }else {
+                radioButtonEmpleado.setChecked(true);
+
+            }
+
+        } else {
+            mostrarDatos();
+
+            if (empleado.getRol().equals(Constantes.ROL_EMPLEADO)) {
+                radioButtonEmpleado.setChecked(true);
+                radioButtonGestor.setChecked(false);
+
+            } else {
+                radioButtonEmpleado.setChecked(false);
+                radioButtonGestor.setChecked(true);
+            }
+            botonR.setEnabled(false);
+        }
     }
 
 }
