@@ -58,7 +58,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center_vertical|end"
-            android:text="Añadir fichaje  "
+            android:text="Fichaje nuevo "
             android:textAlignment="textEnd"
             android:textSize="12sp"
             android:textStyle="bold" />
