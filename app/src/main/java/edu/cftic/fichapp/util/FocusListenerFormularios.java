@@ -1,5 +1,4 @@
 package edu.cftic.fichapp.util;
-
 import android.app.Activity;
 import android.support.design.widget.TextInputLayout;
 import android.view.View;
@@ -45,9 +44,9 @@ public class FocusListenerFormularios implements View.OnFocusChangeListener {
                 case "tagresponsable":
                     validarNombreResponsable(texto_introducido,cajatexto);
                     break;
-                case "tagemail":
+               /* case "tagemail":
                     validarEmail(texto_introducido,cajatexto);
-                    break;
+                    break;*/
                 case "tagnombre":
                     validarNombreEmpleado(texto_introducido,cajatexto);
                     break;
@@ -116,17 +115,17 @@ public class FocusListenerFormularios implements View.OnFocusChangeListener {
      * METODO QUE RECIBE CADENA A COMPROBAR (EMAIL) Y EL EDITTEXT DONDE SE INGRESO. EN CASO DE SER INCORRECTO COMUNICA AL TEXTINPUTLAYOUT CORRESPONDIENTE
      * @param email
      * @param caja_texto
-     */
+
 
     public void validarEmail (String email, EditText caja_texto) {
-        wrapmail = (TextInputLayout)actividad.findViewById(R.id.tilemail);
-        if (!Utilidades.emailValido (email)) {
-            wrapmail.setError("Mail incorrecto");
-            caja_texto.setText("");
-        } else {
-            wrapmail.setErrorEnabled(false);
-        }
+    wrapmail = (TextInputLayout)actividad.findViewById(R.id.tilemail);
+    if (!Utilidades.emailValido (email)) {
+    wrapmail.setError("Mail incorrecto");
+    caja_texto.setText("");
+    } else {
+    wrapmail.setErrorEnabled(false);
     }
+    } */
 
 
     /**

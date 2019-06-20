@@ -33,8 +33,11 @@ public class MenuGestorActivity extends AppCompatActivity {
         empresa = DB.empresas.ultimo();
         if (empresa != null){
             String rutalogo = empresa.getRutalogo();
-            logo.setImageURI(Uri.parse(rutalogo));
+            if(rutalogo!= null){
+                logo.setImageURI(Uri.parse(rutalogo));
+            }
         }
+
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 

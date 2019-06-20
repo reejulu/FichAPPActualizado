@@ -84,24 +84,40 @@
                     android:tag="tagresponsable" />
             </android.support.design.widget.TextInputLayout>
 
-            <android.support.design.widget.TextInputLayout
-                android:id="@+id/tilemail"
+            <!--  <android.support.design.widget.TextInputLayout
+                  android:id="@+id/tilemail"
+                  android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:layout_marginLeft="16dp"
+                  android:layout_marginTop="10dp"
+                  android:layout_marginRight="16dp"
+                  android:layout_marginBottom="30dp"
+                  app:passwordToggleEnabled="true">
+
+                  <EditText
+                      android:id="@+id/cajaemail"
+                      android:layout_width="match_parent"
+                      android:layout_height="wrap_content"
+                      android:focusable="false"
+                      android:onClick="lanzarPickerCorreos"
+                      android:hint="Email"
+                      android:inputType="textEmailAddress"
+                      android:tag="tagemail" />
+              </android.support.design.widget.TextInputLayout>-->
+
+            <EditText
+                android:id="@+id/cajaemail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:focusable="false"
                 android:layout_marginLeft="16dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginRight="16dp"
                 android:layout_marginBottom="30dp"
-                app:passwordToggleEnabled="true">
-
-                <EditText
-                    android:id="@+id/cajaemail"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="Email"
-                    android:inputType="textEmailAddress"
-                    android:tag="tagemail" />
-            </android.support.design.widget.TextInputLayout>
+                android:onClick="lanzarPickerCorreos"
+                android:hint="Email"
+                android:inputType="textEmailAddress"
+                android:tag="tagemail" />
 
             <LinearLayout
                 android:layout_width="match_parent"

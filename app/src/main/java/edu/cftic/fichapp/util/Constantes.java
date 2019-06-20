@@ -12,7 +12,9 @@ public class Constantes {
 
     public static final String[] PERMISOS = {
             Manifest.permission.CAMERA,
-            Manifest.permission.WRITE_EXTERNAL_STORAGE
+            Manifest.permission.WRITE_EXTERNAL_STORAGE,
+            Manifest.permission.GET_ACCOUNTS,
+            Manifest.permission.READ_CONTACTS
     };
 
     public static final int CODIGO_PETICION_PERMISOS = 150;

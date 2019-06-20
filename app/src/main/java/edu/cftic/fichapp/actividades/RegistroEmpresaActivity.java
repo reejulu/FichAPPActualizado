@@ -1,5 +1,7 @@
 package edu.cftic.fichapp.actividades;
 
+import android.accounts.Account;
+import android.accounts.AccountManager;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -37,6 +39,7 @@ import edu.cftic.fichapp.bean.Empresa;
 import edu.cftic.fichapp.persistencia.DB;
 import edu.cftic.fichapp.util.Constantes;
 import edu.cftic.fichapp.util.FocusListenerFormularios;
+import edu.cftic.fichapp.util.Utilidades;
 
 public class RegistroEmpresaActivity extends AppCompatActivity {
 
@@ -56,6 +59,7 @@ public class RegistroEmpresaActivity extends AppCompatActivity {
     private Intent intent;
     private Uri photo_uri; // para almacenar la ruta de la imagen
 
+    String[] cuentas_mail = null; // Cuentas de correo del dispositivo
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -102,6 +106,77 @@ public class RegistroEmpresaActivity extends AppCompatActivity {
         }
 
 
+    }
+
+
+
+    /**
+     * METODO QUE LANZA EL ONCLINE DEL EDITTEXT cajatextomail Y CREA UN ALERT DIALOG CON LAS CUENTAS DE CORREO DEL DISPOSITIVO
+     * UNA VEZ SELECCIONADA UNA SE SETEA EN EL EDITTEXT cajatextomail
+     * @param view EDITTEXT cajatextomail
+     */
+    public void lanzarPickerCorreos(View view) {
+
+        getCuentasMail();
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Seleccione cuenta correo: ").setIcon(R.mipmap.ic_launcher)
+                .setItems(cuentas_mail, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        cajatextomail.setText(cuentas_mail[which]);
+                    }
+                });
+        builder.create();
+        builder.show();
+    }
+
+
+    /**
+     * METDODO QUE RECOGE MONTA EL ARRAY DE STRING CON LAS CUENTAS DE CORREO SI SON DE GMAIL
+     *
+     */
+    private void getCuentasMail() {
+        AccountManager accountManager = (AccountManager) getSystemService(ACCOUNT_SERVICE);
+
+        Account[] lista_cuentas = accountManager.getAccounts();
+        String str_aux = "";
+
+        if (lista_cuentas.length>0){
+            for (Account cuenta : lista_cuentas)
+            {
+
+                Log.d(getClass().getCanonicalName(), " Cuenta = " + cuenta.name);
+                if (cuenta.type.equals("com.google")) //si la cuenta es de gmail
+                {
+                    str_aux = str_aux + cuenta.name+",";
+                }
+            }
+
+            if (str_aux.length() != 0)
+            {
+                cuentas_mail = componerListaCorreos(str_aux.substring(0, str_aux.length() - 1));
+            } else //cuentas = 0
+            {
+                Log.d(getClass().getCanonicalName(), " NO HAY CUENTAS ");
+            }
+        }else {
+            Log.d(getClass().getCanonicalName(), "No consigo ver las cuentas. ");
+        }
+
+
+    }
+
+
+    /**
+     *  METODO QUE RECIBE UN STRING CON LAS CUENTAS DE CORREO Y RETURNA UN ARRAY DE STRING
+     * @param listaxcomas String con las cuentas de correo separadas por comas
+     * @return Array de String
+     */
+    private String[] componerListaCorreos(String listaxcomas) {
+        String[] lista_correos = null;
+
+        lista_correos = listaxcomas.split(",");
+
+        return lista_correos;
     }
 
     /**
@@ -202,7 +277,6 @@ public class RegistroEmpresaActivity extends AppCompatActivity {
             /*String[] array = empresa.getRutalogo().split("%");
             String nuevaRuta = array[0] +"%25"+ array[1];
             Log.d(Constantes.TAG_APP, "nuevaRuta " +nuevaRuta);*/
-            //empresa.setRutalogo(getFilePath());
             Log.d(Constantes.TAG_APP, "RUTA =  " + empresa.getRutalogo());
             imageView.setImageURI(Uri.parse(empresa.getRutalogo() ));
         }
@@ -216,7 +290,7 @@ public class RegistroEmpresaActivity extends AppCompatActivity {
 
         FocusListenerFormularios focusListenerFormularios = new FocusListenerFormularios(this);
         cajatextocif.setOnFocusChangeListener(focusListenerFormularios);
-        cajatextomail.setOnFocusChangeListener(focusListenerFormularios);
+        //cajatextomail.setOnFocusChangeListener(focusListenerFormularios);
         cajatextoresp.setOnFocusChangeListener(focusListenerFormularios);
         cajatextonombreempresa.setOnFocusChangeListener(focusListenerFormularios);
     }
@@ -289,13 +363,9 @@ public class RegistroEmpresaActivity extends AppCompatActivity {
         String urlLogo= null;
         if (photo_uri != null){
             Log.d(Constantes.TAG_APP," uri " + photo_uri);
-            urlLogo = getFilePath();
-            Log.d(Constantes.TAG_APP," uri " + photo_uri);
-            //urlLogo = photo_uri.toString();
-        }else {
-            urlLogo = empresa.getRutalogo();
+            urlLogo = Utilidades.getPath(this,photo_uri);
+            Log.d(Constantes.TAG_APP," uri " + urlLogo);
         }
-
 
         if(cif.length() != 0){
             if (nombreEmpresa.length() != 0){
@@ -307,7 +377,10 @@ public class RegistroEmpresaActivity extends AppCompatActivity {
                         empresa.setResponsable(responsable);
                         empresa.setEmail(email);
                         Log.d(Constantes.TAG_APP," uri " + urlLogo);
-                        empresa.setRutalogo(urlLogo);
+                        if(urlLogo!=null){
+                            empresa.setRutalogo(urlLogo);
+                        }
+
                         return isValido=true;
                     }else{
                         Toast.makeText(this,"EL EMAIL DEBE CONTENER DATOS",Toast.LENGTH_LONG).show();
@@ -335,23 +408,24 @@ public class RegistroEmpresaActivity extends AppCompatActivity {
      *  /storage/emulated/0/DCIM/Camera/IMG_20190607_095229.jpg
      *  // https://stackoverflow.com/questions/5657411/android-getting-a-file-uri-from-a-content-uri#answer-12603415
      * @return
-     */
-    private String getFilePath() {
-        String filePath = null;
-        if (photo_uri != null && "content".equals(photo_uri.getScheme())) {
-            Cursor cursor = this.getContentResolver().query(photo_uri, new String[]{android.provider.MediaStore.Images.ImageColumns.DATA}, null, null, null);
-            cursor.moveToFirst();
-            filePath = cursor.getString(0);
-            cursor.close();
-        } else {
-            if( photo_uri != null) {
-                filePath = photo_uri.getPath();
-            }
-        }
-        Log.d("MIAPP", "Chosen path = " + filePath);
 
-        return filePath;
+    private String getFilePath() {
+    String filePath = null;
+    if (photo_uri != null && "content".equals(photo_uri.getScheme())) {
+    Cursor cursor = this.getContentResolver().query(photo_uri, new String[]{android.provider.MediaStore.Images.ImageColumns.DATA}, null, null, null);
+    cursor.moveToFirst();
+    filePath = cursor.getString(0);
+    cursor.close();
+    } else {
+    if( photo_uri != null) {
+    filePath = photo_uri.getPath();
     }
+    }
+    Log.d("MIAPP", "Chosen path = " + filePath);
+
+    return filePath;
+    }
+     */
 
 
     /**

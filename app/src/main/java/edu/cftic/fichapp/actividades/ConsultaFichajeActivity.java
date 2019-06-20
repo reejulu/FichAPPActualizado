@@ -81,13 +81,10 @@ public class ConsultaFichajeActivity extends AppCompatActivity {
 
         botonConsultar.setAnimation(AnimationUtils.loadAnimation(this, R.anim.transicion_boton));
 
-        //TODO comentar/Descomentar
-        // u = (Empleado) getIntent().getExtras().get(Constantes.EMPLEADO); Descomentar esta linea y comentar la siguiente cuando se integre el proyecto
-        u = DB.empleados.getEmpleadoId(1); // comentar esta linea y descomentar la anterior cuando se integre el proyecto
 
+        u = (Empleado) getIntent().getExtras().get(Constantes.EMPLEADO); //Descomentar esta linea y comentar la siguiente cuando se integre el proyecto
+        //u = DB.empleados.getEmpleadoId(1); // comentar esta linea y descomentar la anterior cuando se integre el proyecto
 
-        // Ponemos el nombre en el campo TextView "empleadoNombreFicha"
-        //empleadoNombre.setText(u.getNombre());
 
         listaEmpleados = (ArrayList<Empleado>) DB.empleados.getEmpleados();
         ArrayList<String> arrayEmpleados = new ArrayList<>();
@@ -115,9 +112,9 @@ public class ConsultaFichajeActivity extends AppCompatActivity {
             }
         });
 
-        //TODO comentar/Descomentar
-        // if ( u.getRol().equals(Constantes.ROL_GESTOR)){  // Descomentar esta linea y comentar la siguiente
-        if (u.getRol().equals("B")) {
+
+         if ( u.getRol().equals(Constantes.ROL_GESTOR)){  // Descomentar esta linea y comentar la siguiente
+        //if (u.getRol().equals("B")) {
             //Es Gestor
             empleadoNombreSpinner.setEnabled(true);
             btnAñadirFichaje.setEnabled(false);

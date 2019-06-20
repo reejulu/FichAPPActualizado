@@ -1,6 +1,8 @@
 package edu.cftic.fichapp.actividades;
 
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -9,6 +11,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import edu.cftic.fichapp.R;
@@ -36,6 +39,7 @@ public class RegistroEmpleadoActivity extends AppCompatActivity {
     Button botonE;
     RadioButton radioButtonGestor;
     RadioButton radioButtonEmpleado;
+    RadioGroup radioGroup;
 
 
     Empleado empleado = new Empleado();
@@ -90,7 +94,8 @@ public class RegistroEmpleadoActivity extends AppCompatActivity {
     public void logicaBotones() {
 
         if (empleado == null) {
-            radioButtonEmpleado.setChecked(true);
+            radioButtonGestor.setChecked(true);
+            radioGroup.getChildAt(1).setEnabled(false);
             botonM.setEnabled(false);
             botonE.setEnabled(false);
             empleado = new Empleado();
@@ -153,8 +158,28 @@ public class RegistroEmpleadoActivity extends AppCompatActivity {
 
     public void eliminarUsuario(View view) {
 
-        db.empleados.eliminar(empleado.getId_empleado());
-        Toast.makeText(this, "El empleado: "+ empleado.getNombre() + " ha sido eliminado", Toast.LENGTH_LONG).show();
+
+
+        AlertDialog.Builder dialogo1 = new AlertDialog.Builder(this);
+        dialogo1.setTitle("Importante");
+        dialogo1.setMessage("El empleado: "+empleado.getNombre() + " va a ser eliminado. ¿Desea continuar?");
+        dialogo1.setCancelable(false);
+        dialogo1.setPositiveButton("Confirmar", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialogo1, int id) {
+                db.empleados.eliminar(empleado.getId_empleado());
+
+                //Intent intent = new Intent(this, MenuGestorActivity.class);
+                //startActivity(intent);
+            }
+
+        });
+        dialogo1.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialogo1, int id) {
+                // Se cancela la operación de elmiminación
+            }
+        });
+        dialogo1.show();
+
         Intent intent = new Intent(this, MenuGestorActivity.class);
         startActivity(intent);
     }
@@ -191,6 +216,7 @@ public class RegistroEmpleadoActivity extends AppCompatActivity {
         cajarepcontraseña = (EditText) findViewById(R.id.cajarepcontraseña);
         radioButtonGestor = (RadioButton) findViewById(R.id.radioButtongestor);
         radioButtonEmpleado = (RadioButton) findViewById(R.id.radioButtonempleado);
+        radioGroup = (RadioGroup) findViewById(R.id.radioGroup);
     }
 
 
