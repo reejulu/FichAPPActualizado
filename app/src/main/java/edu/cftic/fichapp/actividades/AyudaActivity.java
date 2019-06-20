@@ -45,7 +45,7 @@ public class AyudaActivity extends AppCompatActivity {
             intent_salida = new Intent(this, LoginActivity.class);
             startActivity(intent_salida);
         }
-        
+
 
         finish(); //si vengo de menú, simplemente cierro
     }

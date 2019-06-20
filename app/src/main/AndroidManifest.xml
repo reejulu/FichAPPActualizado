@@ -16,6 +16,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".pdf.CreatePdfActivity"
+            android:label="Crear PDF"/>
+        <activity android:name=".actividades.RegistroEntradaSalida"
+            android:label="Entrada Salida">
+        </activity>
         <activity android:name=".actividades.ModificarCrearBorrarActivity"
             android:label="Modicar Plantilla "></activity>
         <activity android:name=".actividades.ConsultaFichajeActivity"
