@@ -82,9 +82,12 @@ public class ConsultaFichajeActivity extends AppCompatActivity {
         botonConsultar.setAnimation(AnimationUtils.loadAnimation(this, R.anim.transicion_boton));
 
 
-        u = (Empleado) getIntent().getExtras().get(Constantes.EMPLEADO); //Descomentar esta linea y comentar la siguiente cuando se integre el proyecto
-        //u = DB.empleados.getEmpleadoId(1); // comentar esta linea y descomentar la anterior cuando se integre el proyecto
+        u = (Empleado) getIntent().getExtras().get(Constantes.EMPLEADO); // Descomentar esta linea y comentar la siguiente cuando se integre el proyecto
+        // u = DB.empleados.getEmpleadoId(1); // comentar esta linea y descomentar la anterior cuando se integre el proyecto
 
+
+        // Ponemos el nombre en el campo TextView "empleadoNombreFicha"
+        //empleadoNombre.setText(u.getNombre());
 
         listaEmpleados = (ArrayList<Empleado>) DB.empleados.getEmpleados();
         ArrayList<String> arrayEmpleados = new ArrayList<>();
@@ -113,9 +116,9 @@ public class ConsultaFichajeActivity extends AppCompatActivity {
         });
 
 
-         if ( u.getRol().equals(Constantes.ROL_GESTOR)){  // Descomentar esta linea y comentar la siguiente
-        //if (u.getRol().equals("B")) {
-            //Es Gestor
+        if (u.getRol().equals(Constantes.ROL_GESTOR)) {  // Descomentar esta linea y comentar la siguiente
+            // if (u.getRol().equals("B")) {  //Es Gestor
+
             empleadoNombreSpinner.setEnabled(true);
             btnAñadirFichaje.setEnabled(false);
             btnAñadirFichaje.setVisibility(View.INVISIBLE);
@@ -125,7 +128,7 @@ public class ConsultaFichajeActivity extends AppCompatActivity {
         } else {
 
             // Tomamos el usuario que recibiremos en un intent desde el login o desde el menu gestor
-            //u = (Empleado) getIntent().getExtras().get(Constantes.EMPLEADO);
+            u = (Empleado) getIntent().getExtras().get(Constantes.EMPLEADO);
 
             empleadoNombreSpinner.setEnabled(false);
             Log.d(Constantes.TAG_APP, "posicion entrada: " + listaEmpleados.indexOf(u));
@@ -229,20 +232,6 @@ public class ConsultaFichajeActivity extends AppCompatActivity {
 
 
 
-       /*int empleadoId = u.getId_empleado();
-
-        Fichaje ultimoFichaje = DB.fichar.getFichajeUltimo(empleadoId);
-        Timestamp de = ultimoFichaje.getFechainicio();
-        Timestamp hasta = ultimoFichaje.getFechainicio();
-
-
-       fichajesDesdeDB(u);
-
-        ArrayList<Fichaje> fee = (ArrayList<Fichaje>) DB.fichar.getFichaje(empleadoId, de, hasta);
-        for(Fichaje es : fee){
-            Log.i("APPK", "Fichaje :: "+es);
-        }*/
-
 
     }
 
@@ -276,9 +265,10 @@ public class ConsultaFichajeActivity extends AppCompatActivity {
 
     }
 
+
     public void añadirFichajeClick(View view) {
 
-        //TODO hacer intent a activity fichar
+
         Intent intentFichar = new Intent(ConsultaFichajeActivity.this, RegistroEntradaSalida.class);
         intentFichar.putExtra(Constantes.EMPLEADO, u);
 
@@ -286,7 +276,7 @@ public class ConsultaFichajeActivity extends AppCompatActivity {
     }
 
 
-    // Metodo para crear fichajes de prueba
+    // Metodo para crear fichajes de prueba NO SE USA
 
     private void fichajesDesdeDB(Empleado usuario) {
 

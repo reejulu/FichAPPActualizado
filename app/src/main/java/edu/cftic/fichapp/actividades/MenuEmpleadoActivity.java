@@ -3,6 +3,7 @@ package edu.cftic.fichapp.actividades;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
@@ -20,6 +21,27 @@ public class MenuEmpleadoActivity extends AppCompatActivity {
         u = (Empleado) getIntent().getExtras().get(Constantes.EMPLEADO);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        //return super.onCreateOptionsMenu(menu);
+        getMenuInflater().inflate(R.menu.menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+
+        int id = item.getItemId();
+        if(id== R.id.ayuda){
+            Intent about = new Intent(this, AyudaActivity.class);
+            startActivity(about);
+            return true;
+
+        }
+
+        return super.onContextItemSelected(item);
     }
 
     //creamos este metodo para que el ActionBar(la flecha hacia atras) funcione bien

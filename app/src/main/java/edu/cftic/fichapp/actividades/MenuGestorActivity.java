@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -41,6 +43,27 @@ public class MenuGestorActivity extends AppCompatActivity {
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        //return super.onCreateOptionsMenu(menu);
+        getMenuInflater().inflate(R.menu.menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+
+        int id = item.getItemId();
+        if(id== R.id.ayuda){
+            Intent about = new Intent(this, AyudaActivity.class);
+            startActivity(about);
+            return true;
+
+        }
+
+        return super.onContextItemSelected(item);
     }
 
     //creamos este metodo para que el ActionBar(la flecha hacia atras) funcione bien
@@ -84,12 +107,6 @@ public class MenuGestorActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    public void email(View view) {
-        //TODO saltarc a mandar email
-        Intent intent = new Intent(this, CreatePdfActivity.class);
-        intent.putExtra("empresa",u.getEmpresa());
-        startActivity(intent);
-    }
 
     public void fichar(View view) {
 

@@ -57,7 +57,7 @@ public class ModificarCrearBorrarActivity extends AppCompatActivity {
         // Instanciamos la BB.DD.
         bdd = new DB();
 
-        cargarDatosPrueba();
+        //cargarDatosPrueba();
 
         datos = (ArrayList<Empleado>) DB.empleados.getEmpleados();
 
@@ -170,13 +170,13 @@ public class ModificarCrearBorrarActivity extends AppCompatActivity {
     }
 
 
-    private void cargarDatosPrueba() {
+    /*private void cargarDatosPrueba() {
 
-                /*
+                *//*
         ESTE EJEMPLO ESTÁ COMENTADO, PERO ES NECESARIO QUE EL USUARIO, LA PRIMERA VEZ QUE ENTRE EN LA
         APLICACIÓN YA EXISTA EN LA BASE DE DATOS UN REGISTRO DE FICHAJE SIN DATOS EN LA ENTRADA Y SALIDA
         PARA QUE AL RECUPERAR EL ÚLTIMO FICHAJE, NO DE ERROR.
-*/
+*//*
 //Empresa(String cif, String nombre_empresa, String responsable, String email, String rutalogo)
         //String cif, String nombre_empresa, String responsable, String email, String rutalogo
         Empresa em = new Empresa("B123456", "XYZYZ SA", "T T", "reejulu1@gmail.com", "pepe");
@@ -214,7 +214,7 @@ public class ModificarCrearBorrarActivity extends AppCompatActivity {
 
         // Comentar o eliminar cuando esté implementado realmente en la APP
 
-/*
+*//*
         Fichaje fe = new Fichaje(tr, de, hasta, "Mensaje");
         Log.i("APPK", "F: " + fe);
         boolean d = DB.fichar.nuevo(fe);
@@ -226,8 +226,8 @@ public class ModificarCrearBorrarActivity extends AppCompatActivity {
         for (String es : rol) {
             Log.i("APPK", "R:: " + es);
         }
-*/
+*//*
 
-    }
+    }*/
 }
 

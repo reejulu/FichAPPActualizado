@@ -165,13 +165,13 @@
                 android:clickable="true"
                 android:elevation="6dp"
                 android:foreground="?android:attr/selectableItemBackground"
-                app:cardCornerRadius="16dp">
+                app:cardCornerRadius="16dp"
+                android:onClick="consulta">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:gravity="center"
-                    android:onClick="consulta"
                     android:orientation="vertical">
 
                     <ImageView
@@ -215,66 +215,8 @@
                 android:clickable="true"
                 android:elevation="6dp"
                 android:foreground="?android:attr/selectableItemBackground"
-                app:cardCornerRadius="16dp">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:gravity="center"
-                    android:onClick="plantilla"
-                    android:orientation="vertical">
-
-                    <ImageView
-                        android:layout_width="64dp"
-                        android:layout_height="64dp"
-                        android:layout_marginTop="10dp"
-                        android:background="@drawable/formaovalcircular1"
-                        android:padding="10dp"
-                        android:src="@drawable/horas_plantilla_color" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:text="Horas plantilla"
-                        android:textStyle="bold" />
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="2dp"
-                        android:layout_margin="6dp"
-                        android:background="@color/lightgray" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:padding="5dp"
-                        android:text="Consultar horas plantilla"
-                        android:textColor="@android:color/darker_gray"
-                        android:textSize="12sp" />
-
-                </LinearLayout>
-            </android.support.v7.widget.CardView>
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:clipToPadding="false"
-            android:gravity="center"
-            android:orientation="horizontal">
-
-            <android.support.v7.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:layout_weight="1"
-                android:clickable="true"
-                android:elevation="6dp"
-                android:foreground="?android:attr/selectableItemBackground"
-                app:cardCornerRadius="16dp">
+                app:cardCornerRadius="16dp"
+                android:onClick="plantilla">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -294,7 +236,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
-                        android:text="Informe - Email"
+                        android:text="Horas plantilla"
                         android:textStyle="bold" />
 
                     <View
@@ -306,15 +248,25 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="3dp"
                         android:gravity="center"
                         android:padding="5dp"
-                        android:text="Generar informe - enviar Email"
+                        android:text="Consultar horas plantilla pdf"
                         android:textColor="@android:color/darker_gray"
                         android:textSize="12sp" />
 
                 </LinearLayout>
             </android.support.v7.widget.CardView>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clipToPadding="false"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+
 
             <android.support.v7.widget.CardView
                 android:layout_width="match_parent"

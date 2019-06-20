@@ -15,10 +15,36 @@ import android.util.Patterns;
 import com.aeat.valida.Validador;
 
 
+import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import edu.cftic.fichapp.bean.Empleado;
+import edu.cftic.fichapp.bean.Empresa;
+import edu.cftic.fichapp.persistencia.DB;
+
 public class Utilidades {
+
+
+    public static Boolean hayGestor() {
+        ArrayList<Empleado> empleado = null;
+
+        empleado = (ArrayList<Empleado>) DB.empleados.getRol(Constantes.ROL_GESTOR);
+
+
+        return empleado.size()>0;
+    }
+
+    public static boolean hayEmpresa() {
+        boolean b = false;
+
+        Empresa empresa = DB.empresas.primero();
+        if (empresa != null) {
+            b = true;
+        }
+
+        return b;
+    }
 
 
     //########################## VALIDACIONES FORMULARIOS REGISTRO #######################################

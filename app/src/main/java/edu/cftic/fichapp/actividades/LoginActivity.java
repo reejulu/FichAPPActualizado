@@ -17,6 +17,7 @@ import edu.cftic.fichapp.bean.Empleado;
 import edu.cftic.fichapp.bean.Empresa;
 import edu.cftic.fichapp.persistencia.DB;
 import edu.cftic.fichapp.util.Constantes;
+import edu.cftic.fichapp.util.Utilidades;
 
 public class LoginActivity extends AppCompatActivity  {
 
@@ -30,11 +31,11 @@ public class LoginActivity extends AppCompatActivity  {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        if (!hayEmpresa()) {
+        if (!Utilidades.hayEmpresa()) {
 
             lanzarActividad(RegistroEmpresaActivity.class);
         } else { //hay empresa
-            if (!hayGestor())
+            if (!Utilidades.hayGestor())
             {//no hay gestor
                 lanzarActividad(RegistroEmpleadoActivity.class);
             }  //hay empresa y gestor
@@ -123,26 +124,6 @@ public class LoginActivity extends AppCompatActivity  {
         startActivity(intent);
         finish();
 
-    }
-
-    private Boolean hayGestor() {
-       ArrayList<Empleado> empleado = null;
-
-        empleado = (ArrayList<Empleado>) DB.empleados.getRol(Constantes.ROL_GESTOR);
-
-
-        return empleado.size()>0;
-    }
-
-    private boolean hayEmpresa() {
-        boolean b = false;
-
-        Empresa empresa = DB.empresas.primero();
-        if (empresa != null) {
-            b = true;
-        }
-
-        return b;
     }
 
     private void lanzarActividad(Class actividad_destino) {
