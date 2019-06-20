@@ -87,16 +87,16 @@ public class LoginActivity extends AppCompatActivity  {
         if (u.getRol().equals(Constantes.ROL_EMPLEADO) ){
 
              intent = new Intent(this,MenuEmpleadoActivity.class);
-             intent.putExtra("ID_EMPLEADO",u.getId_empleado());
-            intent.putExtra("EMPLEADO",u);
+             //intent.putExtra("ID_EMPLEADO",u.getId_empleado());
+            intent.putExtra(Constantes.EMPLEADO,u);
 
 
 
         }else if(u.getRol().equals(Constantes.ROL_GESTOR) ){
 
              intent = new Intent(this,MenuGestorActivity.class);
-             intent.putExtra("ID_EMPLEADO",u.getId_empleado());
-            intent.putExtra("EMPLEADO",u);
+             //intent.putExtra("ID_EMPLEADO",u.getId_empleado());
+            intent.putExtra(Constantes.EMPLEADO,u);
 
 
         }
