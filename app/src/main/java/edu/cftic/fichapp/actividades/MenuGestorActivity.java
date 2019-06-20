@@ -76,7 +76,7 @@ public class MenuGestorActivity extends AppCompatActivity {
 //salto a la actividad de juanlu de selcionar empleado
 
         Intent intent = new Intent(this,ModificarCrearBorrarActivity.class);
-        intent.putExtra("EMPLEADO",u);
+        intent.putExtra(EMPLEADO,u);
         startActivity(intent);
 
     }
@@ -84,20 +84,20 @@ public class MenuGestorActivity extends AppCompatActivity {
     public void editarEmpresaPulsado(View view) {
 
         Intent intent = new Intent(this,RegistroEmpresaActivity.class);
-        intent.putExtra("EMPLEADO",u);
+        intent.putExtra(EMPLEADO,u);
         startActivity(intent);
     }
 
     public void consulta(View view) {
 
         Intent intent = new Intent(this,ConsultaFichajeActivity.class);
-        intent.putExtra("EMPLEADO",u);
+        intent.putExtra(EMPLEADO,u);
         startActivity(intent);
     }
 
     public void plantilla(View view) {
         Intent intent = new Intent(this, CreatePdfActivity.class);
-        intent.putExtra("empresa",u.getEmpresa());
+        intent.putExtra(Constantes.EMPRESA,u.getEmpresa());
         startActivity(intent);
     }
 
@@ -105,7 +105,7 @@ public class MenuGestorActivity extends AppCompatActivity {
     public void fichar(View view) {
 
         Intent intent = new Intent(this, RegistroEntradaSalida.class);
-        intent.putExtra("EMPLEADO",u);
+        intent.putExtra(EMPLEADO,u);
         startActivity(intent);
     }
 }

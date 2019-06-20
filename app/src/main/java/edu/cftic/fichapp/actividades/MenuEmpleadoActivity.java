@@ -55,14 +55,14 @@ public class MenuEmpleadoActivity extends AppCompatActivity {
     public void fichar(View view) {
 
         Intent intent = new Intent(this,RegistroEntradaSalida.class);
-        intent.putExtra("EMPLEADO",u);
+        intent.putExtra(Constantes.EMPLEADO,u);
         startActivity(intent);
 
     }
 
     public void consulta(View view) {
         Intent intent = new Intent(this,ConsultaFichajeActivity.class);
-        intent.putExtra("EMPLEADO",u);
+        intent.putExtra(Constantes.EMPLEADO,u);
         startActivity(intent);
     }
 }
