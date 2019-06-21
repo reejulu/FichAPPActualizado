@@ -322,6 +322,12 @@ public class RegistroEntradaSalida extends AppCompatActivity implements AdapterV
         // Recuperar el último fichaje
         //  Fichaje ul = DB.fichar.getFichajeUltimo(empleado.getId_empleado());     // Descomenta esta linea para que use el empleado recuperado del intent
         Fichaje ul = DB.fichar.getFichajeUltimo(empleado.getId_empleado());              // Comentar esta linea para el uso real en la APP
+        if(ul == null){
+            boolean exito = DB.fichar.nuevo(new Fichaje(empleado, new Timestamp( new Date().getTime()), new Timestamp(0), "" ));
+            if(exito){
+                ul = DB.fichar.getFichajeUltimo(empleado.getId_empleado());
+            }
+        }
         ultimoFichaje = ul;
         Log.i("APPK", "" + ul.toString());
     }

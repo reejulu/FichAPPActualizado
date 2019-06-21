@@ -36,7 +36,7 @@ public class EmpleadoDao extends CRUD implements IEmpleadoEsquema, IEmpleadoDao 
         final String seleccion = E_COL_ID_EMPLEADO + " = ?";
         Empleado e = new Empleado();
         cursor = super.query(E_TABLA, E_COLUMNAS, seleccion, argumentos);
-        if(cursor != null){
+        if(cursor != null && cursor.getCount() > 0){
             cursor.moveToFirst();
             while (!cursor.isAfterLast()){
                 e = cursorATabla(cursor);
@@ -51,7 +51,7 @@ public class EmpleadoDao extends CRUD implements IEmpleadoEsquema, IEmpleadoDao 
     public List<Empleado> getEmpleados() {
         List<Empleado> empleadoLista = new ArrayList<Empleado>();
         cursor = super.query(E_TABLA, E_COLUMNAS, null, null);
-        if(cursor != null){
+        if(cursor != null && cursor.getCount() > 0){
             cursor.moveToFirst();
             while (!cursor.isAfterLast()){
                 Empleado e = cursorATabla(cursor);
@@ -69,7 +69,7 @@ public class EmpleadoDao extends CRUD implements IEmpleadoEsquema, IEmpleadoDao 
         Empleado e = null;
         String LIMITE = "1";
         cursor = super.query(E_TABLA, E_COLUMNAS, null, null, E_COL_ID_EMPLEADO, LIMITE);
-        if(cursor != null){
+        if(cursor != null && cursor.getCount() > 0){
             cursor.moveToFirst();
             e = cursorATabla(cursor);
             cursor.close();
@@ -83,7 +83,7 @@ public class EmpleadoDao extends CRUD implements IEmpleadoEsquema, IEmpleadoDao 
         Empleado e = null;
         String LIMITE = "1";
         cursor = super.query(E_TABLA, E_COLUMNAS, null, null, E_COL_ID_EMPLEADO + " DESC ", LIMITE);
-        if(cursor != null){
+        if(cursor != null && cursor.getCount() > 0){
             cursor.moveToFirst();
             e = cursorATabla(cursor);
             cursor.close();
@@ -97,7 +97,7 @@ public class EmpleadoDao extends CRUD implements IEmpleadoEsquema, IEmpleadoDao 
         List<String> roles = new ArrayList<String>();
         final String columnas[] = { E_COL_ROL };
         cursor = super.query(E_TABLA, columnas, null, null, E_COL_ROL, null, null, null);
-        if(cursor != null){
+        if(cursor != null && cursor.getCount() > 0){
             cursor.moveToFirst();
             while (!cursor.isAfterLast()){
                 if(cursor.getColumnIndex(E_COL_ROL) != -1){
@@ -118,7 +118,7 @@ public class EmpleadoDao extends CRUD implements IEmpleadoEsquema, IEmpleadoDao 
         final String seleccion = E_COL_ROL + " = ? " ;
         List<Empleado> e = new ArrayList<>();
         cursor = super.query(E_TABLA, E_COLUMNAS, seleccion, argumentos);
-        if(cursor != null){
+        if(cursor != null && cursor.getCount() > 0){
             cursor.moveToFirst();
             while (!cursor.isAfterLast()){
                 e.add( cursorATabla(cursor));
@@ -135,7 +135,7 @@ public class EmpleadoDao extends CRUD implements IEmpleadoEsquema, IEmpleadoDao 
         final String seleccion = E_COL_USUARIO + " = ? AND " + E_COL_CLAVE + " = ?";
         Empleado e = new Empleado();
         cursor = super.query(E_TABLA, E_COLUMNAS, seleccion, argumentos);
-        if(cursor != null){
+        if(cursor != null && cursor.getCount() > 0){
             cursor.moveToFirst();
             while (!cursor.isAfterLast()){
                 e = cursorATabla(cursor);
@@ -151,7 +151,7 @@ public class EmpleadoDao extends CRUD implements IEmpleadoEsquema, IEmpleadoDao 
         final String seleccion = E_COL_USUARIO + " = ? " ;
         boolean e = false;
         cursor = super.query(E_TABLA, E_COLUMNAS, seleccion, argumentos);
-        if(cursor != null){
+        if(cursor != null && cursor.getCount() > 0){
             cursor.moveToFirst();
             while (!cursor.isAfterLast()){
                 e = true;

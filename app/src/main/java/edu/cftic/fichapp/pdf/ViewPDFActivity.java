@@ -36,11 +36,11 @@ public class ViewPDFActivity extends AppCompatActivity {
 
     if (file.exists())
       pdfView.fromFile(file)
-        .enableSwipe(true)
-        .swipeHorizontal(true)
-        .enableDoubletap(true)
-        .enableAnnotationRendering(true)
-        .load();
+              .enableSwipe(true)
+              .swipeHorizontal(true)
+              .enableDoubletap(true)
+              .enableAnnotationRendering(true)
+              .load();
     else
       Toast.makeText(this,"File not found", Toast.LENGTH_LONG).show();
 

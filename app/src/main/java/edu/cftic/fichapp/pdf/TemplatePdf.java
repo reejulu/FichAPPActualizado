@@ -34,6 +34,8 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.TextStyle;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Locale;
 import edu.cftic.fichapp.bean.Empresa;
 
@@ -50,9 +52,11 @@ public class TemplatePdf extends PdfPageEventHelper {
   private PdfPTable pdfPTable;
   private Empresa emp;
 
-  private static final String PREFIX_INFORM = "INFORME_FICHAJE_";
+  private static final String PREFIX_INFORM = "INFORME_FICHAJE";
   private static final String SUFFIX_INFORM = ".pdf";
   static final String FILE_NAME = PREFIX_INFORM + SUFFIX_INFORM;
+  // private static final String CARPETA_APP = "FICHApp";//TODO mejorar cambiar el nombre de la carpeta destino del informe
+  public static final String RUTA_INFORME =  Environment.getExternalStorageDirectory().getPath()+"/PDF/"+FILE_NAME;
 
   TemplatePdf(Context context, Empresa emp) {
     this.context = context;
@@ -61,19 +65,23 @@ public class TemplatePdf extends PdfPageEventHelper {
     this.emp = emp;
   }
 
-
-  @RequiresApi(api = Build.VERSION_CODES.O)
   void onStartPage() {
+
+    Date date = new Date();
+    Calendar calendar = Calendar.getInstance();
+    calendar.setTime(date);
+
     String[] mainHeaders = new String[]{
-        "INFORME FICHAPP MES " + LocalDate.now().getMonth().getDisplayName(TextStyle.SHORT, Locale.getDefault()) +
-            "-" + LocalDate.now().getYear(),
-        "Fecha: " + LocalDate.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"))
+            "INFORME FICHAPP MES " +  calendar.get(Calendar.MONTH) +
+                    "-" + calendar.get(Calendar.YEAR),
+            "Fecha: " + calendar.getTime()
     };
-      openDocument();
-      addMetaData("Informe fichaje", "Informe", "Ficha APP");
-      setHeaders(mainHeaders, true);
-      addImgName(emp.getRutalogo());
-      addTitles("Nombre empresa", emp.getNombre_empresa(), emp.getCif(), emp.getResponsable());
+
+    openDocument();
+    addMetaData("Informe fichaje", "Informe", "Ficha APP");
+    setHeaders(mainHeaders, true);
+    addImgName(emp.getRutalogo());
+    addTitles("Nombre empresa", emp.getNombre_empresa(), emp.getCif(), emp.getResponsable());
   }
 
   private void openDocument() {

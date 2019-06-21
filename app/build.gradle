@@ -9,6 +9,7 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        multiDexEnabled true
     }
     buildTypes {
         release {
@@ -38,4 +39,36 @@ dependencies {
     implementation ('com.github.barteksc:android-pdf-viewer:2.0.1'){
         exclude group: 'com.android.support'}
 
+    //PARA enviar E-mail
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation 'com.android.support:appcompat-v7:28.0.0'
+    implementation 'com.android.support.constraint:constraint-layout:1.1.3'
+    implementation 'com.google.api-client:google-api-client-android:1.29.0'
+    implementation 'com.google.apis:google-api-services-gmail:v1-rev98-1.25.0'
+    //implementation 'com.google.android.gms:play-services-auth:16.0.1'
+    implementation('com.google.android.gms:play-services-auth:16.0.1') {
+        exclude group: 'com.android.support'
+    }
+    implementation files('libs/mail.jar')
+    implementation files('libs/activation.jar')
+    implementation files('libs/additionnal.jar')
+    implementation 'com.android.support:design:28.0.0'
+    implementation 'com.google.code.gson:gson:2.8.5'
+    implementation 'com.itextpdf:itextg:5.5.10'
+    implementation ('com.github.barteksc:android-pdf-viewer:2.0.1'){
+        exclude group: 'com.android.support'}
+    implementation 'com.android.support:multidex:1.0.3'
+}
+
+android {
+    packagingOptions {
+        exclude 'META-INF/DEPENDENCIES'
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/LICENSE.txt'
+        exclude 'META-INF/license.txt'
+        exclude 'META-INF/NOTICE'
+        exclude 'META-INF/NOTICE.txt'
+        exclude 'META-INF/notice.txt'
+        exclude 'META-INF/ASL2.0'
+    }
 }

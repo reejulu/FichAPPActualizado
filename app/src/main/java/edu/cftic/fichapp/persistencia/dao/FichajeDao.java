@@ -97,7 +97,7 @@ public class FichajeDao extends CRUD implements IFichajeDao, IFichajeEsquema {
         String LIMITE = "1";
         Fichaje f = null;
         cursor = super.query(F_TABLA, F_COLUMNAS, seleccion, argumentos, F_COL_ID_FICHAJE + " DESC ", LIMITE);
-        if(cursor != null){
+        if(cursor != null && cursor.getCount() > 0){
             cursor.moveToFirst();
             f = cursorATabla(cursor);
             cursor.close();
