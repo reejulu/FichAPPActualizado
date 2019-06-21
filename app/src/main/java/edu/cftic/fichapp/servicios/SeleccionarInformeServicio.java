@@ -13,6 +13,10 @@ import edu.cftic.fichapp.actividades.EnviarMailActivity;
 import edu.cftic.fichapp.bean.Empleado;
 import edu.cftic.fichapp.persistencia.DB;
 
+// ESTE SERVICIO NO ESTA TRABAJANDO AUN , ESTA A MEDIAS Y  PRETENDE SUSTITUIR
+// A LA ACTIVIDAD SELECCIONARINFORME PERO COMO SERVICIO
+
+
 public class SeleccionarInformeServicio   extends Service {
 
     public SeleccionarInformeServicio() {

@@ -26,6 +26,10 @@ import edu.cftic.fichapp.actividades.EnviarMailEnviarActivity;
 import edu.cftic.fichapp.helper.InternetDetector;
 import edu.cftic.fichapp.helper.Utils;
 
+
+// ESTE SERVICIO NO ESTA TRABAJANDO AUN , ESTA A MEDIAS Y  PRETENDE SUSTITUIR
+// A LA ACTIVIDAD ENVIARMAILACTIVITY PERO COMO SERVICIO
+
 public class EnviarMailServicio extends Service {
 
     public EnviarMailServicio() {

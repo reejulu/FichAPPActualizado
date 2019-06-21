@@ -15,6 +15,7 @@ import edu.cftic.fichapp.bean.Empleado;
 import edu.cftic.fichapp.bean.Empresa;
 import edu.cftic.fichapp.pdf.CreatePdfActivity;
 import edu.cftic.fichapp.persistencia.DB;
+import edu.cftic.fichapp.servicios.GestorAlarma;
 import edu.cftic.fichapp.util.Constantes;
 
 import static edu.cftic.fichapp.util.Constantes.EMPLEADO;
@@ -42,6 +43,9 @@ public class MenuGestorActivity extends AppCompatActivity {
 
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+             GestorAlarma gestorAlarma = new GestorAlarma(this);
+             gestorAlarma.programarAlarma();
 
     }
 
