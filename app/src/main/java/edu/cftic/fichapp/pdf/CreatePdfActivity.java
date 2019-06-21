@@ -49,6 +49,7 @@ import edu.cftic.fichapp.R;
 
 import edu.cftic.fichapp.actividades.MenuGestorActivity;
 import edu.cftic.fichapp.actividades.SeleccionarInforme;
+import edu.cftic.fichapp.bean.Empleado;
 import edu.cftic.fichapp.bean.Empresa;
 import edu.cftic.fichapp.persistencia.DB;
 import edu.cftic.fichapp.persistencia.esquemas.IEmpleadoEsquema;
@@ -74,12 +75,18 @@ public class CreatePdfActivity extends AppCompatActivity implements IEmpleadoEsq
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-
+    Empleado nu = DB.empleados.primero();
+    //intent.putExtra("empresa", new Gson().toJson(nu.getEmpresa()));
     Bundle bundle = getIntent().getExtras();
     if (bundle != null) {
       emp = new Gson().fromJson(bundle.getString("empresa"), Empresa.class);
       automatic = bundle.getBoolean("CREARPDF", false);
     }
+
+    nu = DB.empleados.primero();
+
+    String pepe = new Gson().toJson(nu.getEmpresa());
+    emp = new Gson().fromJson(pepe,Empresa.class);
 
     if (automatic) {
       createPdf();
@@ -182,6 +189,7 @@ public class CreatePdfActivity extends AppCompatActivity implements IEmpleadoEsq
   }
 
   private void createViewPdf() {
+
     templatePdf = new TemplatePdf(this, emp);
     templatePdf.onStartPage();
     rows = new ArrayList<>();

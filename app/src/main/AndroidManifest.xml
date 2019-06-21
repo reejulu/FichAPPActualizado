@@ -56,6 +56,7 @@
         <activity android:name=".actividades.SeleccionarInforme"></activity>
         <activity android:name=".actividades.EnviarMailActivity"></activity>
         <activity android:name=".actividades.EnviarMailEnviarActivity"></activity>
+        <activity android:name=".pdf.ViewPDFActivity"></activity>
 
         <service
             android:name=".servicios.ServicioEnvio"

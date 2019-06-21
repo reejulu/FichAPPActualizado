@@ -72,6 +72,7 @@ public class SeleccionarInforme extends AppCompatActivity {
             intent.putExtra("CREARPDF", crearpdf);
 
             Empleado nu = DB.empleados.primero();
+            String me = new Gson().toJson(nu.getEmpresa());
             intent.putExtra("empresa", new Gson().toJson(nu.getEmpresa()));
             startActivity(intent);
             finish();
