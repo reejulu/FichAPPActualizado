@@ -96,7 +96,7 @@ public class ModificarCrearBorrarActivity extends AppCompatActivity {
                 //  datos.remove(position);
                 //  adaptador.notifyDataSetChanged();
                 // TODO hay que actualizar BD con el elemento quitado
-                DB.empleados.eliminar(id);
+
                 //ArrayList<Empleado> at = (ArrayList<Empleado>) DB.empleados.getEmpleados();
             }
         }) {
@@ -148,7 +148,8 @@ public class ModificarCrearBorrarActivity extends AppCompatActivity {
 
 
                 // TODO hay que actualizar BD con el elemento quitado
-
+                int id = datos.get(position).getId_empleado();
+                DB.empleados.eliminar(id);
             }
         });
 

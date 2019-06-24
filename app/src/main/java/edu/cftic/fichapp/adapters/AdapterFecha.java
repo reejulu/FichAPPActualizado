@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -75,6 +76,7 @@ public class AdapterFecha extends RecyclerView.Adapter <AdapterFecha.ViewHolderF
 
             ArrayList <Fichaje> fichajeDelDia = porDia.get((String)dd[posicion]);
 
+
             LinearLayoutManager hs_linearLayout = new LinearLayoutManager(this.activity, LinearLayoutManager.VERTICAL, false);
             holder.rViewHijo.setLayoutManager(hs_linearLayout);
 
@@ -84,38 +86,9 @@ public class AdapterFecha extends RecyclerView.Adapter <AdapterFecha.ViewHolderF
             AdapterFichaje hijoAdapter = new AdapterFichaje(this.activity,fichajeDelDia);
             holder.rViewHijo.setAdapter(hijoAdapter);
 
-
-
         } catch (ParseException e) {
             Log.e( "FichApp", "", e);
         }
-
-
-      /*  // Si es fichaje de entrada
-        if (porDia.get(posicion).getFechafin().equals(new Timestamp(0))) {
-
-
-            Timestamp ts = porDia.get(posicion).getFechainicio();
-            Date fecha = new Date();
-            fecha.setTime(ts.getTime());
-            String fechaFormateada = new SimpleDateFormat("HH:mm").format(fecha);
-
-
-            holder.hora.setText(fechaFormateada);
-            holder.iconoEntradaSalida.setImageResource(R.drawable.entrada);
-        } else {
-            // Si es fichaje de salida
-
-
-            Timestamp ts = porDia.get(posicion).getFechafin();
-            Date fecha = new Date();
-            fecha.setTime(ts.getTime());
-            String fechaFormateada = new SimpleDateFormat("HH:mm").format(fecha);
-
-
-            holder.hora.setText(fechaFormateada);
-            holder.iconoEntradaSalida.setImageResource(R.drawable.salida);
-        }*/
 
     }
 

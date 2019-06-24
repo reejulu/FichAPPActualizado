@@ -300,6 +300,7 @@ public class RegistroEntradaSalida extends AppCompatActivity implements AdapterV
         Intent intent0 = new Intent(this, MainActivity.class);// vamos a menu y pasamos el empleado
         //intent0.putExtra(Constantes.EMPLEADO, empleado);
         startActivity(intent0);
+        finish();
 
     }
 

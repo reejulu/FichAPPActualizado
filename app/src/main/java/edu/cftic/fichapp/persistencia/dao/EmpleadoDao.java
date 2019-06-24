@@ -133,7 +133,7 @@ public class EmpleadoDao extends CRUD implements IEmpleadoEsquema, IEmpleadoDao 
     public Empleado getEmpleadoUsuarioClave(String usuario, String clave) {
         final String argumentos[] = { usuario, clave };
         final String seleccion = E_COL_USUARIO + " = ? AND " + E_COL_CLAVE + " = ?";
-        Empleado e = new Empleado();
+        Empleado e = new Empleado(usuario,clave);
         cursor = super.query(E_TABLA, E_COLUMNAS, seleccion, argumentos);
         if(cursor != null && cursor.getCount() > 0){
             cursor.moveToFirst();

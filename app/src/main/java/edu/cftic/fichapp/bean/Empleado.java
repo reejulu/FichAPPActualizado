@@ -13,7 +13,8 @@ public class Empleado implements Serializable {//TODO Hacer parcelable
 
     public Empleado() {
     }
-
+    public Empleado(String usuario,String clave) {
+    }
     public Empleado(int id_empleado, String nombre, String usuario, String clave, String rol, boolean baja, Empresa empresa) {
         this.id_empleado = id_empleado;
         this.nombre = nombre;
@@ -98,7 +99,7 @@ public class Empleado implements Serializable {//TODO Hacer parcelable
                 ", clave='" + clave + '\'' +
                 ", rol='" + rol + '\'' +
                 ", baja=" + baja +
-                ", empresa=" + empresa.getId_empresa() +
+                ", empresa=" + empresa +
                 '}';
     }
 }

@@ -18,11 +18,13 @@
         android:foreground="?android:attr/selectableItemBackground"
         app:cardElevation="6dp"
         android:backgroundTint="@color/yellow">
-
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
         <RelativeLayout
             android:id="@+id/itemFichaje"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:gravity="center_vertical"
             android:orientation="horizontal">
 
@@ -67,5 +69,55 @@
 
 
         </RelativeLayout>
+        <RelativeLayout
+            android:id="@+id/itemFichajeb"
+            android:layout_below="@+id/itemFichaje"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/imgIOb"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:src="@drawable/entrada" />
+
+            <TextView
+                android:id="@+id/textoHorab"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="10dp"
+                android:layout_toRightOf="@id/imgIOb"
+                android:gravity="start"
+                android:text="09:05"
+                android:textAlignment="textStart"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+            <TextView
+                android:id="@+id/textoMensajeb"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="12dp"
+                android:layout_marginTop="12dp"
+                android:layout_toRightOf="@id/textoHorab"
+                android:gravity="start"
+                android:text="mensaje"
+                android:textAlignment="textStart"
+                android:textSize="12sp"
+                android:textStyle="bold" />
+
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:layout_below="@id/imgIOb"
+                android:layout_margin="1dp"
+                android:background="@color/lightgray" />
+
+
+        </RelativeLayout>
+</RelativeLayout>
     </android.support.v7.widget.CardView>
 </LinearLayout>

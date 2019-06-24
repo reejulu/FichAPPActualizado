@@ -4,10 +4,14 @@ import android.content.Intent;
 import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -23,6 +27,10 @@ public class LoginActivity extends AppCompatActivity  {
 
     EditText usuario;
     EditText contraseña;
+    private Spinner empleadoNombreSpinner;
+    private ArrayList<Empleado> listaEmpleados;
+    private Empleado u = null;
+    String nombre;
 
 
 
@@ -30,6 +38,7 @@ public class LoginActivity extends AppCompatActivity  {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        empleadoNombreSpinner = findViewById(R.id.usuario);
 
         if (!Utilidades.hayEmpresa()) {
 
@@ -42,7 +51,38 @@ public class LoginActivity extends AppCompatActivity  {
             //sigo en el login
         }
 
-        usuario = findViewById(R.id.usuario);
+        //usuario = findViewById(R.id.usuario);
+
+        listaEmpleados = (ArrayList<Empleado>) DB.empleados.getEmpleados();
+        ArrayList<String> arrayEmpleados = new ArrayList<>();
+        for (Empleado empleado : listaEmpleados) {
+            arrayEmpleados.add(empleado.getUsuario()+" ---> " +empleado.getRol().toString());
+        }
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, arrayEmpleados);
+        //specify the layout to appear list items
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        //data bind adapter with both spinners
+        empleadoNombreSpinner.setAdapter(adapter);
+        empleadoNombreSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+                u = listaEmpleados.get(position);
+                Log.d(Constantes.TAG_APP, "pos: " + listaEmpleados.get(position));
+                nombre = u.getUsuario();
+
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+
+
+
         contraseña = findViewById(R.id.contraseña);
 
 
@@ -67,8 +107,9 @@ public class LoginActivity extends AppCompatActivity  {
      */
     public void entrar(View view) {
 
-        String nombre = usuario.getText().toString();
+        //nombre = usuario.getText().toString();
         String cont = contraseña.getText().toString();
+        String error = "no";
         Empleado u = DB.empleados.getEmpleadoUsuarioClave(nombre,cont);
         //Valida
         //Validador validador
@@ -79,31 +120,32 @@ public class LoginActivity extends AppCompatActivity  {
             limpiarText(usuario,contraseña);
 
             incorrecto.setText(R.string.error_login);
+            error = "yes";
 
         }
+        if (error.contains("no")) {
+            Intent intent = null;
+            String rol = u.getRol();
+            if (u.getRol().equals(Constantes.ROL_EMPLEADO)) {
 
-        Intent intent = null;
-           String rol = u.getRol();
-        if (u.getRol().equals(Constantes.ROL_EMPLEADO) ){
-
-             intent = new Intent(this,MenuEmpleadoActivity.class);
-             //intent.putExtra("ID_EMPLEADO",u.getId_empleado());
-            intent.putExtra(Constantes.EMPLEADO,u);
-
-
-
-        }else if(u.getRol().equals(Constantes.ROL_GESTOR) ){
-
-             intent = new Intent(this,MenuGestorActivity.class);
-             //intent.putExtra("ID_EMPLEADO",u.getId_empleado());
-            intent.putExtra(Constantes.EMPLEADO,u);
+                intent = new Intent(this, MenuEmpleadoActivity.class);
+                //intent.putExtra("ID_EMPLEADO",u.getId_empleado());
+                intent.putExtra(Constantes.EMPLEADO, u);
 
 
-        }
+            } else if (u.getRol().equals(Constantes.ROL_GESTOR)) {
 
-        if( null != intent) {
+                intent = new Intent(this, MenuGestorActivity.class);
+                //intent.putExtra("ID_EMPLEADO",u.getId_empleado());
+                intent.putExtra(Constantes.EMPLEADO, u);
 
-            startActivity( intent);
+
+            }
+
+            if (null != intent) {
+
+                startActivity(intent);
+            }
         }
     }
 
@@ -112,8 +154,8 @@ public class LoginActivity extends AppCompatActivity  {
 
         for (EditText e : array) {
 
-            e.setText("");
-            e.clearFocus();
+            //e.setText("");
+//            e.clearFocus();
 
         }
     }

@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 
 import edu.cftic.fichapp.R;
 import edu.cftic.fichapp.bean.Empleado;
@@ -18,7 +19,9 @@ public class MenuEmpleadoActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu_empleado);
+        TextView empleado = findViewById(R.id.txtEmpleado);
         u = (Empleado) getIntent().getExtras().get(Constantes.EMPLEADO);
+        empleado.setText(u.getNombre().toString());
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
     }
@@ -57,6 +60,7 @@ public class MenuEmpleadoActivity extends AppCompatActivity {
         Intent intent = new Intent(this,RegistroEntradaSalida.class);
         intent.putExtra(Constantes.EMPLEADO,u);
         startActivity(intent);
+        finish();
 
     }
 
@@ -64,5 +68,6 @@ public class MenuEmpleadoActivity extends AppCompatActivity {
         Intent intent = new Intent(this,ConsultaFichajeActivity.class);
         intent.putExtra(Constantes.EMPLEADO,u);
         startActivity(intent);
+        finish();
     }
 }
