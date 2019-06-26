@@ -78,27 +78,27 @@ public abstract class CRUD {
 
 
     public Cursor getDataOfMonthToPdf(int empresaId, String month) {
-        return  bd.rawQuery("SELECT  e.nombre, f.fechainicio, f.fechafin\n" +
-                ",substr(strftime(\"%m-%d-%Y\", f.fechainicio, 'unixepoch'), 1, 2) as MONTH\n" +
+        return  bd.rawQuery("SELECT  e.nombre, f.fechainicio, f.fechafin \n" +
+                ",substr(strftime(\"%m-%d-%Y\", f.fechainicio, 'unixepoch'), 1, 2) as MONTH \n" +
                 "from empleado as e \n" +
                 "INNER JOIN fichaje as f \n" +
                 "INNER JOIN empresa as emp\n" +
                 "on e.id_empleado = f.id_empleado \n" +
-                "and emp.id_empresa = ?\n" +
+                "and emp.id_empresa = ? \n" +
                 "and e.id_empresa = emp.id_empresa\n" +
-                "and MONTH = ?" +
-                "order by e.nombre, f.fechainicio DESC", new String[]{String.valueOf(empresaId), month});
+                "and MONTH = ?\n" +
+                "order by e.nombre, f.fechainicio,f.fechafin DESC", new String[]{String.valueOf(empresaId), month});
     }
 
     public Cursor getALlDataToPdf(int empresaId) {
-        return  bd.rawQuery("SELECT  e.nombre, f.fechainicio , f.fechafin \n" +
-                "from empleado as e \n" +
-                "INNER JOIN fichaje as f \n" +
+        return  bd.rawQuery("SELECT  e.nombre, f.fechainicio , f.fechafin\n" +
+                "from empleado as e\n" +
+                "INNER JOIN fichaje as f\n" +
                 "INNER JOIN empresa as emp\n" +
-                "on e.id_empleado = f.id_empleado \n" +
+                "on e.id_empleado = f.id_empleado\n" +
                 "and emp.id_empresa = ?\n" +
-                "and e.id_empresa = emp.id_empresa\n" +
-                "order by e.nombre, f.fechainicio DESC", new String[]{String.valueOf(empresaId)});
+                "and e.id_empresa = emp.id_empresa\n"+
+                "order by e.nombre, f.fechainicio,f.fechafin DESC" , new String[]{String.valueOf(empresaId)});
     }
 
     public Cursor getMonthsToSpinnerSelectMonth() {

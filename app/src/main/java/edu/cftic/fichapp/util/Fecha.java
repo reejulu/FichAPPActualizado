@@ -32,4 +32,15 @@ public class Fecha {
         cc.set(Calendar.MILLISECOND, 999);
         return new Timestamp(cc.getTimeInMillis());
     }
+
+    public static Timestamp fichadainicio( Timestamp t){
+        Calendar cc = new GregorianCalendar();
+
+        return new Timestamp(cc.getTimeInMillis());
+    }
+    public static Timestamp fichadafin( Timestamp t){
+        Calendar cc = new GregorianCalendar();
+
+        return new Timestamp(cc.getTimeInMillis());
+    }
 }

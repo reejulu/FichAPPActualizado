@@ -22,6 +22,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
+import android.util.Log;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.SimpleCursorAdapter;
@@ -38,6 +39,7 @@ import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
 import java.util.EnumSet;
+import java.util.GregorianCalendar;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
@@ -51,9 +53,11 @@ import edu.cftic.fichapp.actividades.MenuGestorActivity;
 import edu.cftic.fichapp.actividades.SeleccionarInforme;
 import edu.cftic.fichapp.bean.Empleado;
 import edu.cftic.fichapp.bean.Empresa;
+import edu.cftic.fichapp.bean.Fichaje;
 import edu.cftic.fichapp.persistencia.DB;
 import edu.cftic.fichapp.persistencia.esquemas.IEmpleadoEsquema;
 import edu.cftic.fichapp.persistencia.esquemas.IFichajeEsquema;
+import edu.cftic.fichapp.util.Constantes;
 import edu.cftic.fichapp.util.Fecha;
 
 import static java.util.concurrent.TimeUnit.HOURS;
@@ -69,6 +73,12 @@ public class CreatePdfActivity extends AppCompatActivity implements IEmpleadoEsq
   private Spinner spnMonth;
   private CheckBox checkAll;
   private boolean automatic;
+  Timestamp fichadainicial;
+  Timestamp fichadafinal;
+  private ArrayList<Fichaje> listaFichajes;
+  private Empleado u = null;
+  Empleado empleado = new Empleado();
+  Map<TimeUnit, Long> timeUnitLongMap;
 
 
   @RequiresApi(api = Build.VERSION_CODES.N)
@@ -193,7 +203,7 @@ public class CreatePdfActivity extends AppCompatActivity implements IEmpleadoEsq
     templatePdf = new TemplatePdf(this, emp);
     templatePdf.onStartPage();
     rows = new ArrayList<>();
-//    getDataToPdf();
+    getDataToPdf();
     templatePdf.closeDocument();
     // Se creo el documento, ahora creamos la vista con los datos. (Class TemplatePdf)
     // siempre que la petición no venga del envio automático del informe.
@@ -213,7 +223,10 @@ public class CreatePdfActivity extends AppCompatActivity implements IEmpleadoEsq
       c = (Cursor) spnMonth.getSelectedItem();
       month = c.getString(c.getColumnIndex("month"));
       if (checkAll.isChecked()) {
+        Log.i("FichApp","la empresa a buscar es : "+emp.getId_empresa());
         cursor = DB.fichar.getALlDataToPdf(emp.getId_empresa());
+        int pointer1 = cursor.getPosition();
+        Log.i("FichApp","el cursor recibido de la busqueda es : "+pointer1);
       } else {
         cursor = DB.fichar.getDataOfMonthToPdf(emp.getId_empresa(), month);
       }
@@ -226,18 +239,36 @@ public class CreatePdfActivity extends AppCompatActivity implements IEmpleadoEsq
       cursor = DB.fichar.getDataOfMonthToPdf(emp.getId_empresa(), month);
     }
 
+    Calendar cc = new GregorianCalendar();
     ArrayList<FichajeEmpleado> arrayFe = new ArrayList<>();
+
+
     if (cursor.getCount() > 0) {
       cursor.moveToFirst();
+
       do {
         FichajeEmpleado fe = new FichajeEmpleado(
                 cursor.getString(cursor.getColumnIndex(E_COL_NOMBRE)),
+
                 Fecha.inicio(new Timestamp(cursor.getLong(cursor.getColumnIndex(F_COL_INICIO)))),
-                Fecha.fin(new Timestamp(cursor.getLong(cursor.getColumnIndex(F_COL_FIN))))
+                Fecha.fin(new Timestamp(cursor.getLong(cursor.getColumnIndex(F_COL_FIN)))),
+                fichadainicial = new Timestamp(cursor.getLong(cursor.getColumnIndexOrThrow(F_COL_INICIO))),
+                fichadafinal =new Timestamp(cursor.getLong(cursor.getColumnIndexOrThrow(F_COL_FIN)))
         );
+
         arrayFe.add(fe);
+        int pointer = cursor.getPosition();
+        pointer = pointer;
+        Log.i("FichApp","CreatePdfActivity-arrayFe es Empleado : "+arrayFe.get(pointer).getNombreEmpleado().toString());
+        Log.i("FichApp","CreatePdfActivity-arrayFe es Fecha Inicio : "+arrayFe.get(pointer).getFechaInicio().toString());
+        Log.i("FichApp","CreatePdfActivity-arrayFe es Fecha Fin : "+arrayFe.get(pointer).getFechaFin().toString());
+        Log.i("FichApp","CreatePdfActivity-arrayFe es Fichada inicio : "+arrayFe.get(pointer).getFichajeInicio().toString());
+         Log.i("FichApp","CreatePdfActivity-arrayFe es Fichada final : "+arrayFe.get(pointer).getFichajeFin().toString());
       } while (cursor.moveToNext());
     }
+
+
+
 
     String[] dataRows;
     String[] dataRowsTotalHours;
@@ -251,16 +282,31 @@ public class CreatePdfActivity extends AppCompatActivity implements IEmpleadoEsq
     SimpleDateFormat formatDateMonth = new SimpleDateFormat("MM", Locale.getDefault());
     SimpleDateFormat formatDate = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
     SimpleDateFormat formatDateStart = new SimpleDateFormat("HH:mm:ss", Locale.getDefault());
+
     SimpleDateFormat formatDateEnd = new SimpleDateFormat("HH:mm:ss", Locale.getDefault());
+    //SimpleDateFormat sfd = new SimpleDateFormat("yyyyMMdd HH:mm:ss");
 
     for (int i =0; i< arrayFe.size(); i++) {
       rows = new ArrayList<>();
+      // fichada inicio
+      String strDateStart = formatDateStart.format(arrayFe.get(i).getFichajeInicio());
+      Log.i("FichApp","CreatePdfActiviy-strDateStart es(hora inicio) : "+ strDateStart);
+      // fichada fin
+      String strDateEnd = formatDateStart.format(arrayFe.get(i).getFichajeFin());
+      Log.i("FichApp","CreatePdfActiviy-strDateEnd es(hora fin) : "+ strDateEnd);
 
-      String strDateStart = formatDateStart.format(arrayFe.get(i).getFechaInicio());
       String strDateMonth = formatDateMonth.format(arrayFe.get(i).getFechaInicio());
-      String strDateEnd = formatDateEnd.format(arrayFe.get(i).getFechaFin());
+
       String strDate = formatDate.format(arrayFe.get(i).getFechaInicio());
-      Map<TimeUnit, Long> timeUnitLongMap = computeDiff(arrayFe.get(i).getFechaInicio(), arrayFe.get(i).getFechaFin());
+      boolean marcarNohayfichada = false;
+      // COMPROBACION SI HAY FICHAJE DE SALIDA
+      if (arrayFe.get(i).getFichajeFin().toString().contains("01:00:00")){
+        marcarNohayfichada = true;
+      }
+
+      if (marcarNohayfichada == false) {
+        timeUnitLongMap = computeDiff(arrayFe.get(i).getFichajeInicio(), arrayFe.get(i).getFichajeFin());
+      }
       String ne = arrayFe.get(i).getNombreEmpleado();
       if (!tempEmpleadoName.equals(ne)) {
         String[] headers = new String[]{
@@ -279,41 +325,85 @@ public class CreatePdfActivity extends AppCompatActivity implements IEmpleadoEsq
       if (!tempDate.equals(arrayFe.get(i).getFechaInicio())) {
         countDay = 0;
       }
+      if (marcarNohayfichada == false){
+        if (countDay == 0)
 
-      if (countDay == 0) {
-        totalHours += Integer.parseInt(Objects.requireNonNull(timeUnitLongMap.get(HOURS)).toString());
-        totalMinutes += Integer.parseInt(Objects.requireNonNull(timeUnitLongMap.get(MINUTES)).toString());
-        dataRows = new String[]{
-                strDate,
-                strDateStart,
-                strDateEnd,
-                timeUnitLongMap.get(HOURS) + " Horas " + timeUnitLongMap.get(MINUTES) + " minutos"
-        };
-      } else {
-        totalHours += Integer.parseInt(Objects.requireNonNull(timeUnitLongMap.get(HOURS)).toString());
-        totalMinutes += Integer.parseInt(Objects.requireNonNull(timeUnitLongMap.get(MINUTES)).toString());
-        dataRows = new String[]{
-                "",
-                strDateStart,
-                strDateEnd,
-                timeUnitLongMap.get(HOURS) + " Horas " + timeUnitLongMap.get(MINUTES) + " minutos"
-        };
-      }
+        {
 
-      rows.add(dataRows);
+          totalHours += Integer.parseInt(Objects.requireNonNull(timeUnitLongMap.get(HOURS)).toString());
+          totalMinutes += Integer.parseInt(Objects.requireNonNull(timeUnitLongMap.get(MINUTES)).toString());
+          dataRows = new String[]{
+                  strDate,
+                  strDateStart,
+                  strDateEnd,
+                  timeUnitLongMap.get(HOURS) + " Horas " + timeUnitLongMap.get(MINUTES) + " minutos"
+          };
+        } else {
+          totalHours += Integer.parseInt(Objects.requireNonNull(timeUnitLongMap.get(HOURS)).toString());
+          totalMinutes += Integer.parseInt(Objects.requireNonNull(timeUnitLongMap.get(MINUTES)).toString());
+          dataRows = new String[]{
+                  strDate,
+                  strDateStart,
+                  strDateEnd,
+                  timeUnitLongMap.get(HOURS) + " Horas " + timeUnitLongMap.get(MINUTES) + " minutos"
+          };
+        }
 
-      if(i < arrayFe.size()-1) {
-        if (!arrayFe.get(i).getFechaInicio().equals(arrayFe.get(i + 1).getFechaInicio())) {
+        rows.add(dataRows);
+        if(i < arrayFe.size()-1) {
+          if (!arrayFe.get(i).getFechaInicio().equals(arrayFe.get(i + 1).getFechaInicio())) {
+            dataRowsTotalHours = setTotalTimes(strDate, totalHours, totalMinutes);
+            rows.add(dataRowsTotalHours);
+            totalHours = 0;
+            totalMinutes = 0;
+          }
+        } else {
           dataRowsTotalHours = setTotalTimes(strDate, totalHours, totalMinutes);
           rows.add(dataRowsTotalHours);
           totalHours = 0;
           totalMinutes = 0;
         }
-      } else {
-        dataRowsTotalHours = setTotalTimes(strDate, totalHours, totalMinutes);
-        rows.add(dataRowsTotalHours);
-        totalHours = 0;
-        totalMinutes = 0;
+      }
+      // FALTA AL MENOS UNA FICHADA DE SALIDA
+      else {
+        if (countDay == 0)
+
+        {
+         // totalHours += Integer.parseInt(Objects.requireNonNull(timeUnitLongMap.get(HOURS)).toString());
+         // totalMinutes += Integer.parseInt(Objects.requireNonNull(timeUnitLongMap.get(MINUTES)).toString());
+          dataRows = new String[]{
+                  strDate,
+                  strDateStart,
+                  "Omision fichada",
+                  "No se calcula falta una fichada"
+          };
+        } else {
+         // totalHours += Integer.parseInt(Objects.requireNonNull(timeUnitLongMap.get(HOURS)).toString());
+         // totalMinutes += Integer.parseInt(Objects.requireNonNull(timeUnitLongMap.get(MINUTES)).toString());
+          dataRows = new String[]{
+                  strDate,
+                  strDateStart,
+                  "Omision fichada",
+                  "No se calcula falta una fichada"
+          };
+        }
+
+        rows.add(dataRows);
+        /*
+        if(i < arrayFe.size()-1) {
+          if (!arrayFe.get(i).getFechaInicio().equals(arrayFe.get(i + 1).getFechaInicio())) {
+            dataRowsTotalHours = setTotalTimes(strDate, totalHours, totalMinutes);
+            rows.add(dataRowsTotalHours);
+            totalHours = 0;
+            totalMinutes = 0;
+          }
+        } else {
+          dataRowsTotalHours = setTotalTimes(strDate, totalHours, totalMinutes);
+          rows.add(dataRowsTotalHours);
+          totalHours = 0;
+          totalMinutes = 0;
+        }
+        */
       }
 
       tempDate = arrayFe.get(i).getFechaInicio();
@@ -386,11 +476,16 @@ class FichajeEmpleado {
   private String nombreEmpleado;
   private Date fechaInicio;
   private Date fechaFin;
+  private Timestamp fichajeInicio;
+  private Timestamp fichajeFin;
 
-  FichajeEmpleado(String nombreEmpleado, Date fechaInicio, Date fechaFin) {
+
+  FichajeEmpleado(String nombreEmpleado, Date fechaInicio, Date fechaFin,Timestamp fichajeInicio,Timestamp fichajeFin) {
     this.nombreEmpleado = nombreEmpleado;
     this.fechaInicio = fechaInicio;
     this.fechaFin = fechaFin;
+    this.fichajeInicio = fichajeInicio;
+    this.fichajeFin = fichajeFin;
   }
 
   String getNombreEmpleado() {
@@ -403,5 +498,20 @@ class FichajeEmpleado {
     return fechaFin;
   }
 
+  public Timestamp getFichajeInicio() {
+    return fichajeInicio;
+  }
+
+  public void setFichajeInicio(Timestamp fichajeInicio) {
+    this.fichajeInicio = fichajeInicio;
+  }
+
+  public Timestamp getFichajeFin() {
+    return fichajeFin;
+  }
+
+  public void setFichajeFin(Timestamp fichajeFin) {
+    this.fichajeFin = fichajeFin;
+  }
 }
 

@@ -9,6 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.view.animation.AnimationUtils;
+import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -93,6 +94,10 @@ public class ConsultaFichajeActivity extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 u = listaEmpleados.get(position);
+                botonConsultar.setText("CONSULTAR FICHAJE");
+                contadordiatratado = 0;
+                // TODO borrar pantalla anterior con algun refresco del recycler
+
                 Log.i(Constantes.TAG_APP, "pos: " + listaEmpleados.get(position));
             }
             @Override
@@ -198,6 +203,7 @@ public class ConsultaFichajeActivity extends AppCompatActivity {
                 int fichadas = listaFichajes.size();
                 if (contadordiatratado == fichadas) {
                     botonConsultar.setText("CONSULTAR FICHAJE");
+                    contadordiatratado = 0;
                     // no quedan dias que tratar
                 } else {
                     // continuar desde el siguiente index de listaFichajes
@@ -217,6 +223,7 @@ public class ConsultaFichajeActivity extends AppCompatActivity {
         ArrayList<Fichaje> tmp1Fichaje = new ArrayList<>();
         diatratado = "primero";
         // continuo la busqueda en listaFichajes desde el ultimo indice buscado
+
         for (int ii = index; ii < listaFichajes.size(); ii++) {
             Fichaje fichaje = listaFichajes.get(ii);
             contadordiatratado = contadordiatratado + 1;

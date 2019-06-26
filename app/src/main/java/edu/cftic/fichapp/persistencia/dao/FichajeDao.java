@@ -48,6 +48,8 @@ public class FichajeDao extends CRUD implements IFichajeDao, IFichajeEsquema {
         return ee;
     }
 
+
+
     @Override
     public List<Fichaje> getFichaje(Timestamp desde, Timestamp hasta) {
         long de = Fecha.inicio(desde).getTime();
