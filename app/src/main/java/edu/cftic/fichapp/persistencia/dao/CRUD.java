@@ -79,7 +79,7 @@ public abstract class CRUD {
 
     public Cursor getDataOfMonthToPdf(int empresaId, String month) {
         return  bd.rawQuery("SELECT  e.nombre, f.fechainicio, f.fechafin \n" +
-                ",substr(strftime(\"%m-%d-%Y\", f.fechainicio, 'unixepoch'), 1, 2) as MONTH \n" +
+                ",substr(strftime (\"%Y-%m-%d\" ,(datetime( fechainicio/1000, 'unixepoch'))),6,2)  as month\n" +
                 "from empleado as e \n" +
                 "INNER JOIN fichaje as f \n" +
                 "INNER JOIN empresa as emp\n" +
@@ -100,9 +100,14 @@ public abstract class CRUD {
                 "and e.id_empresa = emp.id_empresa\n"+
                 "order by e.nombre, f.fechainicio,f.fechafin DESC" , new String[]{String.valueOf(empresaId)});
     }
+//  return bd.rawQuery("SELECT  DISTINCT  id_fichaje as _id,  substr(strftime(\"%m-%d-%Y\", fechainicio, 'unixepoch'), 1, 2) as month\n"
+    //Compute the date and time given a unix timestamp 1092941466.
 
+    //SELECT datetime(1092941466, 'unixepoch');
+    //    return bd.rawQuery("SELECT  DISTINCT  id_fichaje as _id,  substr(strftime (\"%Y-%m-%d\" ,(datetime( fechainicio, 'unixepoch'))),1)  as month\n" +
+    //            return bd.rawQuery("SELECT  DISTINCT  id_fichaje as _id,  datetime( fechainicio, 'unixepoch')  as month\n" +
     public Cursor getMonthsToSpinnerSelectMonth() {
-        return bd.rawQuery("SELECT  DISTINCT  id_fichaje as _id,  substr(strftime(\"%m-%d-%Y\", fechainicio, 'unixepoch'), 1, 2) as month\n" +
+        return bd.rawQuery("SELECT  DISTINCT  id_fichaje as _id,  substr(strftime (\"%Y-%m-%d\" ,(datetime( fechainicio/1000, 'unixepoch'))),6,2)  as month\n" +
                 "from  fichaje\n" +
                 "GROUP BY month", null);
     }

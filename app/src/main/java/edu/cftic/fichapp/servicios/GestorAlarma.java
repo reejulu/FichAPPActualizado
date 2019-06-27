@@ -30,28 +30,28 @@ public class GestorAlarma {
             // fecha de final del presente mes
             Calendar cal = Calendar.getInstance();
             // calcula el ultimo dia del presente mes
-            //cal.set(Calendar.DATE, cal.getActualMaximum(Calendar.DATE));
+            cal.set(Calendar.DATE, cal.getActualMaximum(Calendar.DATE));
 
             // calcula la ultima hora del presente dia
             cal.set(Calendar.HOUR, cal.getActualMaximum(Calendar.HOUR));
             cal.set(Calendar.MINUTE,59);
             cal.set(Calendar.SECOND,45);
             Date lastDayOfMonth = cal.getTime();
-            Log.i("MIAPP", "El e-mail se enviara el " + lastDayOfMonth.toString());
+            Log.i("FichApp", "El e-mail se enviara el " + lastDayOfMonth.toString());
 
             long tiempoActual = calendar_actual.getTimeInMillis();
             long tiempoAlarma = cal.getTimeInMillis();
             long tiemporestante = tiempoAlarma - tiempoActual;
             long minutos = tiemporestante / (60000);
             long horas = tiemporestante / (60000 * 60);
-            Log.i("MIAPP", "tiempo restante en minutos es : " + minutos);
-            Log.i("MIAPP", "tiempo restante en horas es : " + horas);
+            Log.i("FichApp", "tiempo restante en minutos es : " + minutos);
+            Log.i("FichApp", "tiempo restante en horas es : " + horas);
             long dias = horas / 24;
             long horasrestantes = horas - (dias * 24);
 
             long tiempoenminutos = minutos - (dias * 24 * 60) - (horasrestantes * 60);
 
-            Log.i("MIAPP", "faltan " + dias + " dias  y " + horasrestantes + " horas y " + tiempoenminutos + " minutos");
+            Log.i("FichApp", "faltan " + dias + " dias  y " + horasrestantes + " horas y " + tiempoenminutos + " minutos");
 
             tiempo = tiempoAlarma;
 
@@ -64,7 +64,7 @@ public class GestorAlarma {
         //mensaje informativo
         SimpleDateFormat dateformatter = new SimpleDateFormat("E dd/MM/yyyy 'a las' hh:mm:ss");
         String mensaje = "Alarma programada para " + dateformatter.format(tiempo);
-        Log.i("MIAPP", mensaje);
+        Log.i("FichApp", mensaje);
 
 
         Toast.makeText(this.context, mensaje, Toast.LENGTH_LONG).show();
@@ -79,7 +79,8 @@ public class GestorAlarma {
         Intent intentAlarm = new Intent(this.context, edu.cftic.fichapp.servicios.AlarmReceiver.class);
         AlarmManager alarmManager = (AlarmManager) this.context.getSystemService(Context.ALARM_SERVICE);
         PendingIntent pi = PendingIntent.getBroadcast(this.context, 55, intentAlarm, PendingIntent.FLAG_UPDATE_CURRENT);
-        alarmManager.set(AlarmManager.RTC_WAKEUP, tiempo, pi);//TIempo, No es el tiempo que falta. Es el tiempo expresado en milisegundos equivalente a la fecha y hora del omento en que se quiere ejecutar
+        alarmManager.set(AlarmManager.RTC_WAKEUP, tiempo, pi);//TIempo, No es el tiempo que falta. Es el tiempo expresado en milisegundos equivalente a la fecha y hora
+        // del momento en que se quiere ejecutar
 
         informarToastAlarma(tiempo);
 

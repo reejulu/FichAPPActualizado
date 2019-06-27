@@ -7,7 +7,6 @@
 package edu.cftic.fichapp.pdf;
 
 import android.Manifest;
-import android.annotation.TargetApi;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -49,7 +48,6 @@ import java.util.concurrent.TimeUnit;
 
 import edu.cftic.fichapp.R;
 
-import edu.cftic.fichapp.actividades.MenuGestorActivity;
 import edu.cftic.fichapp.actividades.SeleccionarInforme;
 import edu.cftic.fichapp.bean.Empleado;
 import edu.cftic.fichapp.bean.Empresa;
@@ -57,12 +55,12 @@ import edu.cftic.fichapp.bean.Fichaje;
 import edu.cftic.fichapp.persistencia.DB;
 import edu.cftic.fichapp.persistencia.esquemas.IEmpleadoEsquema;
 import edu.cftic.fichapp.persistencia.esquemas.IFichajeEsquema;
-import edu.cftic.fichapp.util.Constantes;
 import edu.cftic.fichapp.util.Fecha;
 
 import static java.util.concurrent.TimeUnit.HOURS;
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
 import static java.util.concurrent.TimeUnit.MINUTES;
+import static java.util.concurrent.TimeUnit.SECONDS;
 
 public class CreatePdfActivity extends AppCompatActivity implements IEmpleadoEsquema, IFichajeEsquema {
 
@@ -106,10 +104,10 @@ public class CreatePdfActivity extends AppCompatActivity implements IEmpleadoEsq
 
       CardView btnCreatePdf = findViewById(R.id.btn_create);
       spnMonth = findViewById(R.id.spnSelectMonth);
-      Cursor cursorAdapter = DB.empleados.getMonthsToSpinnerSelectMonth();
+
       SimpleCursorAdapter spnMonthsAdapter = new SimpleCursorAdapter(this,
               android.R.layout.simple_spinner_item,
-              cursorAdapter,
+              DB.empleados.getMonthsToSpinnerSelectMonth(),
               new String[]{"month"},
               new int[]{android.R.id.text1}, 0);
       spnMonthsAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -232,7 +230,8 @@ public class CreatePdfActivity extends AppCompatActivity implements IEmpleadoEsq
       }
     }
     else {
-      month = String.valueOf(calendar.get(Calendar.MONTH));
+      int mes = calendar.get(Calendar.MONTH) + 1;
+      month = String.valueOf(mes);
       if (Integer.valueOf(month) < 10) {
         month = "0"+month;
       }
@@ -275,6 +274,7 @@ public class CreatePdfActivity extends AppCompatActivity implements IEmpleadoEsq
     String[] dataRowsEmployee;
     int totalHours = 0;
     int totalMinutes = 0;
+    int totalSeconds = 0;
     Date tempDate = new Date();
     int countDay = 0;
     String tempEmpleadoName ="";
@@ -332,30 +332,59 @@ public class CreatePdfActivity extends AppCompatActivity implements IEmpleadoEsq
 
           totalHours += Integer.parseInt(Objects.requireNonNull(timeUnitLongMap.get(HOURS)).toString());
           totalMinutes += Integer.parseInt(Objects.requireNonNull(timeUnitLongMap.get(MINUTES)).toString());
-          dataRows = new String[]{
-                  strDate,
-                  strDateStart,
-                  strDateEnd,
-                  timeUnitLongMap.get(HOURS) + " Horas " + timeUnitLongMap.get(MINUTES) + " minutos"
-          };
+          if (totalMinutes == 0){
+            // solo mostrar segundos
+            totalSeconds += Integer.parseInt(Objects.requireNonNull(timeUnitLongMap.get(SECONDS)).toString());
+            dataRows = new String[]{
+                    strDate,
+                    strDateStart,
+                    strDateEnd,
+                    totalSeconds + " segundos"
+            };
+          }else {
+            dataRows = new String[]{
+                    strDate,
+                    strDateStart,
+                    strDateEnd,
+                    timeUnitLongMap.get(HOURS) + " Horas " + timeUnitLongMap.get(MINUTES) + " minutos"
+            };
+          }
         } else {
           totalHours += Integer.parseInt(Objects.requireNonNull(timeUnitLongMap.get(HOURS)).toString());
           totalMinutes += Integer.parseInt(Objects.requireNonNull(timeUnitLongMap.get(MINUTES)).toString());
-          dataRows = new String[]{
-                  strDate,
-                  strDateStart,
-                  strDateEnd,
-                  timeUnitLongMap.get(HOURS) + " Horas " + timeUnitLongMap.get(MINUTES) + " minutos"
-          };
+          if (totalMinutes == 0) {
+            // solo mostrar segundos
+            totalSeconds = Integer.parseInt(Objects.requireNonNull(timeUnitLongMap.get(SECONDS)).toString());
+            dataRows = new String[]{
+                    strDate,
+                    strDateStart,
+                    strDateEnd,
+                    totalSeconds + " segundos"
+            };
+
+          }else {
+            dataRows = new String[]{
+                    strDate,
+                    strDateStart,
+                    strDateEnd,
+                    timeUnitLongMap.get(HOURS) + " Horas " + timeUnitLongMap.get(MINUTES) + " minutos"
+            };
+          }
         }
 
         rows.add(dataRows);
         if(i < arrayFe.size()-1) {
           if (!arrayFe.get(i).getFechaInicio().equals(arrayFe.get(i + 1).getFechaInicio())) {
-            dataRowsTotalHours = setTotalTimes(strDate, totalHours, totalMinutes);
-            rows.add(dataRowsTotalHours);
-            totalHours = 0;
-            totalMinutes = 0;
+            if (arrayFe.get(i+1).getFichajeFin().toString().contains("01:00:00")){
+              // la fichada siguiente de salida esta pendiente
+              totalHours = 0;
+              totalMinutes = 0;
+            }else {
+              dataRowsTotalHours = setTotalTimes(strDate, totalHours, totalMinutes);
+              rows.add(dataRowsTotalHours);
+              totalHours = 0;
+              totalMinutes = 0;
+            }
           }
         } else {
           dataRowsTotalHours = setTotalTimes(strDate, totalHours, totalMinutes);
