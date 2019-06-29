@@ -24,19 +24,20 @@ public class GestorAlarma {
     private long msHastaFinDeMes () {
         long tiempo = 0;
 
+        // Calendar calendar_actual = Calendar.getInstance();
+        // tiempo = calendar_actual.getTimeInMillis() + 10000; //en 10 ss saltará la alarma
+
             Calendar calendar_actual = Calendar.getInstance();
-
-
             // fecha de final del presente mes
             Calendar cal = Calendar.getInstance();
             // calcula el ultimo dia del presente mes
             cal.set(Calendar.DATE, cal.getActualMaximum(Calendar.DATE));
-
             // calcula la ultima hora del presente dia
             cal.set(Calendar.HOUR, cal.getActualMaximum(Calendar.HOUR));
             cal.set(Calendar.MINUTE,59);
             cal.set(Calendar.SECOND,45);
             Date lastDayOfMonth = cal.getTime();
+
             Log.i("FichApp", "El e-mail se enviara el " + lastDayOfMonth.toString());
 
             long tiempoActual = calendar_actual.getTimeInMillis();
@@ -73,8 +74,8 @@ public class GestorAlarma {
     public void programarAlarma() {
 
         tiempo = msHastaFinDeMes();//tiempoAlarma;
-        //Calendar calendar_actual = Calendar.getInstance();
-        //tiempo = calendar_actual.getTimeInMillis() + 10000; //en 10 ss saltará la alarma
+       // Calendar calendar_actual = Calendar.getInstance();
+       // tiempo = calendar_actual.getTimeInMillis() + 10000; //en 10 ss saltará la alarma
 
         Intent intentAlarm = new Intent(this.context, edu.cftic.fichapp.servicios.AlarmReceiver.class);
         AlarmManager alarmManager = (AlarmManager) this.context.getSystemService(Context.ALARM_SERVICE);

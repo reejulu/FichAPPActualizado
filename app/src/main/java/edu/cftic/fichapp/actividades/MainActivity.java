@@ -11,6 +11,7 @@ import edu.cftic.fichapp.R;
 import edu.cftic.fichapp.bean.Empleado;
 import edu.cftic.fichapp.bean.Empresa;
 import edu.cftic.fichapp.persistencia.DB;
+import edu.cftic.fichapp.servicios.GestorAlarma;
 import edu.cftic.fichapp.util.Constantes;
 import edu.cftic.fichapp.util.Preferencias;
 import edu.cftic.fichapp.util.Utilidades;
@@ -18,6 +19,7 @@ import edu.cftic.fichapp.util.Utilidades;
 public class MainActivity extends AppCompatActivity {
 
     private CheckBox checkBox;
+    GestorAlarma gestorAlarma;
 
 
 
@@ -36,8 +38,17 @@ public class MainActivity extends AppCompatActivity {
 
         if (!Preferencias.terminosAceptados(this)) {
             lanzarActividad(AvisosLegalesActivity.class);
+            // GESTIONAMOS EL ENVIO DE LA ALARMA
+            // con fecha ultimo dia de mes a las 23:59:45 se
+            // gestionara la creaccion del informe pdf del mes en curso y su
+            // posterior envio al correo de la empresa que se cree.
+            // solo se enviara la primera vez que se ejecute la APP
+            gestorAlarma = new GestorAlarma(this);
+            gestorAlarma.programarAlarma();
 
         } else //no es la primera, vemos ayuda
+
+
             {
                 setContentView(R.layout.activity_ayuda);
                 checkBox = findViewById(R.id.no_mostrar);

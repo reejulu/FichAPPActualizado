@@ -44,8 +44,8 @@ public class MenuGestorActivity extends AppCompatActivity {
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-             GestorAlarma gestorAlarma = new GestorAlarma(this);
-             gestorAlarma.programarAlarma();
+       //      GestorAlarma gestorAlarma = new GestorAlarma(this);
+       //      gestorAlarma.programarAlarma();
 
     }
 

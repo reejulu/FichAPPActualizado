@@ -19,44 +19,60 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
         <activity android:name=".pdf.CreatePdfActivity"
-            android:label="Crear PDF"/>
+            android:label="Crear PDF"
+            android:screenOrientation="portrait"  />
         <activity android:name=".actividades.RegistroEntradaSalida"
-            android:label="Entrada Salida">
+            android:label="Entrada Salida"
+            android:screenOrientation="portrait"  >
         </activity>
         <activity android:name=".actividades.ModificarCrearBorrarActivity"
-            android:label="Modicar Plantilla "></activity>
+            android:label="Modicar Plantilla "
+            android:screenOrientation="portrait"  ></activity>
         <activity android:name=".actividades.ConsultaFichajeActivity"
-            android:label="Consulta Fichaje"/>
+            android:label="Consulta Fichaje"
+            android:screenOrientation="portrait"  />
 
         <activity
             android:name=".actividades.Creditos"
-            android:label="Créditos" />
+            android:label="Créditos"
+            android:screenOrientation="portrait"  />
         <activity
             android:name=".actividades.RegistroEmpresaActivity"
-            android:label="Registro Empresa" />
+            android:label="Registro Empresa"
+            android:screenOrientation="portrait"  />
         <activity
             android:name=".actividades.LoginActivity"
-            android:label="Login" />
+            android:label="Login"
+            android:screenOrientation="portrait"  />
         <activity
             android:name=".actividades.RegistroEmpleadoActivity"
-            android:label="Registro Empleado" />
+            android:label="Registro Empleado"
+            android:screenOrientation="portrait"  />
         <activity
             android:name=".actividades.MenuEmpleadoActivity"
             android:label="Menú Gestor" />
         <activity
             android:name=".actividades.MenuGestorActivity"
-            android:label="Menú Gestor" />
+            android:label="Menú Gestor"
+            android:screenOrientation="portrait"  />
         <activity
             android:name=".actividades.AyudaActivity"
-            android:label="Ayuda" />
+            android:label="Ayuda"
+            android:screenOrientation="portrait"  />
         <activity
             android:name=".actividades.AvisosLegalesActivity"
-            android:label="Aviso Legal" />
-        <activity android:name=".actividades.SeleccionarInforme"></activity>
-        <activity android:name=".actividades.EnviarMailActivity"></activity>
-        <activity android:name=".actividades.EnviarMailEnviarActivity"></activity>
-        <activity android:name=".pdf.ViewPDFActivity"></activity>
+            android:label="Aviso Legal"
+            android:screenOrientation="portrait"  />
+        <activity android:name=".actividades.SeleccionarInforme"
+            android:screenOrientation="portrait"  ></activity>
+        <activity android:name=".actividades.EnviarMailActivity"
+            android:screenOrientation="portrait"  ></activity>
+        <activity android:name=".actividades.EnviarMailEnviarActivity"
+            android:screenOrientation="portrait"  ></activity>
+        <activity android:name=".pdf.ViewPDFActivity"
+            android:screenOrientation="portrait"  ></activity>
 
         <service
             android:name=".servicios.ServicioEnvio"
@@ -75,18 +91,24 @@
             android:name=".servicios.AlarmReceiver"
             android:enabled="true"
             android:exported="true" />
+        <receiver
+            android:name=".servicios.ReceiverBoot"
+            android:enabled="true"
+            android:exported="true"
+            >
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
 
-        <activity android:name=".actividades.MainActivity">
+        <activity android:name=".actividades.MainActivity"
+            android:screenOrientation="portrait"  >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".pdf.CreatePdfActivity"
-            android:label="Crear PDF"/>
-        <activity android:name=".actividades.RegistroEntradaSalida"
-            android:label="Entrada Salida"/>
     </application>
 
 </manifest>
