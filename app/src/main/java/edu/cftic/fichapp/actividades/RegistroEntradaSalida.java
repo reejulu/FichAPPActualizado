@@ -96,7 +96,6 @@ public class RegistroEntradaSalida extends AppCompatActivity implements AdapterV
         Log.d("MIAPP", "Salida: " + ultimoFichaje.getFechafin());
 
 
-
         // Establecemos el tipo de fichaje si es de salida o de entrada
         if (!ultimoFichaje.getFechafin().equals(new Timestamp(0))) {
             // Tipo fichaje 2 es fichaje de entrada (Fichaje Nuevo)
@@ -104,6 +103,17 @@ public class RegistroEntradaSalida extends AppCompatActivity implements AdapterV
         } else {
             // Tipo fichaje 1 es fichaje de salida (Modificar fichaje)
             tipoFichaje = 2;
+            if (!ultimoFichaje.getFechainicio().equals(new Timestamp(0))){
+                // asumo que se olvido fichar en salida y esta fichada
+                // pasa a ser de llegada
+                tipoFichaje = 1;
+            }
+            //TODO hay que reasignar tipoFichaje cuando
+            // por ejemplo , falta fichaje de salida pero el dia es diferente.
+            // Tenemos diferentes opciones:
+            // 1- Se deja omision de fichada en inicio
+            //    La fichada pasa a ser como de entrada en lugar de salida
+
         }
 
         // Actualizamos la vista dependiendo si el último fichaje fue de entrada o de salida

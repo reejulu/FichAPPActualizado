@@ -1,6 +1,7 @@
 package edu.cftic.fichapp.actividades;
 
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -10,11 +11,15 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 
+import java.io.File;
+import java.io.IOException;
+
 import edu.cftic.fichapp.R;
 import edu.cftic.fichapp.bean.Empleado;
 import edu.cftic.fichapp.bean.Empresa;
 import edu.cftic.fichapp.pdf.CreatePdfActivity;
 import edu.cftic.fichapp.persistencia.DB;
+import edu.cftic.fichapp.persistencia.DataBaseHelper;
 import edu.cftic.fichapp.servicios.GestorAlarma;
 import edu.cftic.fichapp.util.Constantes;
 
@@ -46,6 +51,23 @@ public class MenuGestorActivity extends AppCompatActivity {
 
        //      GestorAlarma gestorAlarma = new GestorAlarma(this);
        //      gestorAlarma.programarAlarma();
+        DataBaseHelper dbhelper = new DataBaseHelper(getApplicationContext());
+        SQLiteDatabase db = dbhelper.getWritableDatabase();
+        Boolean existe = dbhelper.checkDataBase();
+        /*
+        if (existe == false){
+            Log.i("FichApp","MenuGestorActivity- Existe BD");
+            File dbFile=getDatabasePath("DBcontrol.db");
+            Log.i("FichApp", dbFile.toString());
+          //  dbhelper.exportDatabse("DBControl.db");
+            try {
+                dbhelper.importDB();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+        }
+        */
 
     }
 

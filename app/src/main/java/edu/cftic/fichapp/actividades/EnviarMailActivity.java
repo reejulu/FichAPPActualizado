@@ -58,6 +58,7 @@ import javax.mail.internet.MimeMultipart;
 import edu.cftic.fichapp.R;
 import edu.cftic.fichapp.helper.InternetDetector;
 import edu.cftic.fichapp.helper.Utils;
+import edu.cftic.fichapp.persistencia.interfaces.IFichajeDao;
 
 public class EnviarMailActivity extends AppCompatActivity {
 
@@ -85,6 +86,8 @@ public class EnviarMailActivity extends AppCompatActivity {
     private Uri photo_uri;
     String email;
     String mlastErrorString= "valor inicial";
+    String path;
+    Boolean compartir;
 
     @Override
 
@@ -109,7 +112,14 @@ public class EnviarMailActivity extends AppCompatActivity {
         Your problem will be automatically solved. Be sure to create client id and key
         with both your debug keystore and release keystore
      */
-        email = getIntent().getStringExtra("email");
+        compartir = getIntent().getBooleanExtra("compartir",false);
+        if (compartir == true){
+            // El proceso viene de LoginActivity para enviar DB al Email que se ha seleccionado
+            email = getIntent().getStringExtra("email");
+            path = getIntent().getStringExtra("path");
+        }else {
+            email = getIntent().getStringExtra("email");
+        }
 
         init();
 
@@ -127,11 +137,21 @@ public class EnviarMailActivity extends AppCompatActivity {
         //DATOS PARA ENVIAR EL INFORME
 
         emaildestion = email;
-        emailtitulo = "Informe";
-        emailmensaje = "Adjunto se envia el fichero .pdf con el reporte mensual";
-
+        if (compartir == true){
+            emailtitulo = "BASE de DATOS";
+            emailmensaje = "Se adjunta el fichero actual de la base de datos";
+        }else {
+            emailtitulo = "Informe";
+            emailmensaje = "Adjunto se envia el fichero .pdf con el reporte mensual";
+        }
         // request to attacth the report pdf file to the e-mail
         Intent intent = new Intent(this, EnviarMailEnviarActivity.class);
+        // En caso de venir desde LoginActivity tenemos que adjuntar filepath y boolen
+        if (compartir == true){
+            intent.putExtra("compartir",true);
+            intent.putExtra("path",path);
+        }
+
         startActivityForResult(intent, Utils.REQUEST_INSERT_FILE_REPORT);
         // The execution will continue in onActivityResult for REQUEST_INSERT_FILE_REPORT(2)
     }
@@ -412,7 +432,11 @@ public class EnviarMailActivity extends AppCompatActivity {
             //        mProgress.hide();
             Log.i("MIAPP", "onPostExecute - he terminado de enviar el email");
             finish();
-            mlastErrorString = "ENVIADO CORRECTAMENTE";
+            if (compartir == true){
+                mlastErrorString = "NO ENVIAR NOTIFICACION";
+            }else {
+                mlastErrorString = "ENVIADO CORRECTAMENTE";
+            }
             Intent intent_reciver = new Intent("SERVICIO_TERMINADO_FICHAPP");
             intent_reciver.putExtra("CODIGO", mlastErrorString);
             sendBroadcast(intent_reciver);
@@ -436,6 +460,9 @@ public class EnviarMailActivity extends AppCompatActivity {
                 }
             } else {
                 mlastErrorString = "Error"+mLastError;
+            }
+            if (compartir == true){
+                mlastErrorString = "NO ENVIAR NOTIFICACION";
             }
             Intent intent_reciver = new Intent("SERVICIO_TERMINADO_FICHAPP");
             intent_reciver.putExtra("CODIGO", mlastErrorString);

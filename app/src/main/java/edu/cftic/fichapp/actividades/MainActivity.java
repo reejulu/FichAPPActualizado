@@ -1,20 +1,28 @@
 package edu.cftic.fichapp.actividades;
 
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
+import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.CheckBox;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 
 import edu.cftic.fichapp.R;
 import edu.cftic.fichapp.bean.Empleado;
 import edu.cftic.fichapp.bean.Empresa;
 import edu.cftic.fichapp.persistencia.DB;
+import edu.cftic.fichapp.persistencia.DataBaseHelper;
 import edu.cftic.fichapp.servicios.GestorAlarma;
 import edu.cftic.fichapp.util.Constantes;
 import edu.cftic.fichapp.util.Preferencias;
 import edu.cftic.fichapp.util.Utilidades;
+
+import static edu.cftic.fichapp.persistencia.DataBaseHelper.DATABASE_NAME;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -35,6 +43,29 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        // La base de datos sera importada en caso de existir el fichero en:
+        // /0/Download/DBControl.db
+        // y que no tengamos DB local
+        /*
+        DataBaseHelper dbhelper = new DataBaseHelper(getApplicationContext());
+       // SQLiteDatabase db = dbhelper.getWritableDatabase();
+      //  Boolean existe = dbhelper.checkDataBase();
+
+            String sd = Environment.getExternalStorageDirectory().toString();
+            String sd1 = sd + "/" + "Download/" + DATABASE_NAME;
+            File mInput = new File(sd1);
+            if (mInput.exists()) {
+                Log.i("FichApp", "MenuGestorActivity- Existe BD en External memory y puede ser importado");
+                try {
+                    dbhelper.importDB();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+               // mInput.delete();
+
+            }
+            */
 
         if (!Preferencias.terminosAceptados(this)) {
             lanzarActividad(AvisosLegalesActivity.class);

@@ -22,6 +22,8 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 
@@ -30,6 +32,7 @@ import java.io.IOException;
 import java.lang.reflect.Array;
 import java.lang.reflect.Method;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -37,9 +40,12 @@ import edu.cftic.fichapp.R;
 import edu.cftic.fichapp.bean.Empleado;
 import edu.cftic.fichapp.bean.Empresa;
 import edu.cftic.fichapp.persistencia.DB;
+import edu.cftic.fichapp.persistencia.DataBaseHelper;
 import edu.cftic.fichapp.util.Constantes;
 import edu.cftic.fichapp.util.FocusListenerFormularios;
 import edu.cftic.fichapp.util.Utilidades;
+
+import static edu.cftic.fichapp.persistencia.DataBaseHelper.DATABASE_NAME;
 
 public class RegistroEmpresaActivity extends AppCompatActivity {
 
@@ -60,6 +66,9 @@ public class RegistroEmpresaActivity extends AppCompatActivity {
     private Uri photo_uri; // para almacenar la ruta de la imagen
 
     String[] cuentas_mail = null; // Cuentas de correo del dispositivo
+    Button btnSi;
+    Button btnNo;
+    private Empleado u = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,6 +92,89 @@ public class RegistroEmpresaActivity extends AppCompatActivity {
         desactivarModoEstricto();
         // Esta instrucción pide los permisos para acceder a galería de fotos.
         ActivityCompat.requestPermissions(this, Constantes.PERMISOS, Constantes.CODIGO_PETICION_PERMISOS);
+
+        //*************************
+        //importar DB si existiera
+        //*************************
+        // La base de datos sera importada en caso de existir el fichero en:
+        // /0/Download/DBControl.db
+        // y que no tengamos DB local
+        DataBaseHelper dbhelper = new DataBaseHelper(getApplicationContext());
+        // SQLiteDatabase db = dbhelper.getWritableDatabase();
+        //  Boolean existe = dbhelper.checkDataBase();
+
+        String sd = Environment.getExternalStorageDirectory().toString();
+        String sd1 = sd + "/" + "Download/" + DATABASE_NAME;
+        File mInput = new File(sd1);
+
+        if (mInput.exists()== true){
+            //TODO crear boton para preguntar si se desea importar los datos
+            // esto puede ser un framelayout .
+            TextView txt1 = findViewById(R.id.txtEncontradoFicheroDB);
+            txt1.setVisibility(View.VISIBLE);
+            TextView txt2 = findViewById(R.id.txtConfirmarImportar);
+            txt2.setVisibility(View.VISIBLE);
+            btnSi = findViewById(R.id.btnsi);
+            btnSi.setVisibility(View.VISIBLE);
+            btnNo = findViewById(R.id.btnno);
+            btnNo.setVisibility(View.VISIBLE);
+            LinearLayout uno = findViewById(R.id.linearoot);
+            uno.setVisibility(View.INVISIBLE);
+
+
+        }
+
+
+        btnSi.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                TextView txt1 = findViewById(R.id.txtEncontradoFicheroDB);
+                txt1.setVisibility(View.INVISIBLE);
+                TextView txt2 = findViewById(R.id.txtConfirmarImportar);
+                txt2.setVisibility(View.INVISIBLE);
+                btnSi = findViewById(R.id.btnsi);
+                btnSi.setVisibility(View.INVISIBLE);
+                btnNo = findViewById(R.id.btnno);
+                btnNo.setVisibility(View.INVISIBLE);
+                LinearLayout uno = findViewById(R.id.linearoot);
+                uno.setVisibility(View.VISIBLE);
+                if (mInput.exists()) {
+                    Log.i("FichApp", "MenuGestorActivity- Existe BD en External memory y puede ser importado");
+                    try {
+                        dbhelper.importDB();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    //  mInput.delete();
+
+                }
+                //Empleado u = DB.empleados.primero();
+                //Intent intent = new Intent(getBaseContext(), MenuGestorActivity.class);
+                //intent.putExtra(Constantes.EMPLEADO, u);
+                //startActivity(intent);
+               // u = (Empleado) getIntent().getExtras().get(Constantes.EMPLEADO);
+                Intent intent = new Intent(getBaseContext(), LoginActivity.class);
+                startActivity(intent);
+                finish();
+
+            }
+        });
+
+        btnNo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                TextView txt1 = findViewById(R.id.txtEncontradoFicheroDB);
+                txt1.setVisibility(View.INVISIBLE);
+                TextView txt2 = findViewById(R.id.txtConfirmarImportar);
+                txt2.setVisibility(View.INVISIBLE);
+                btnSi = findViewById(R.id.btnsi);
+                btnSi.setVisibility(View.INVISIBLE);
+                btnNo = findViewById(R.id.btnno);
+                btnNo.setVisibility(View.INVISIBLE);
+                LinearLayout uno = findViewById(R.id.linearoot);
+                uno.setVisibility(View.VISIBLE);
+            }
+        });
 
     }
 
@@ -109,10 +201,10 @@ public class RegistroEmpresaActivity extends AppCompatActivity {
     }
 
 
-
     /**
      * METODO QUE LANZA EL ONCLINE DEL EDITTEXT cajatextomail Y CREA UN ALERT DIALOG CON LAS CUENTAS DE CORREO DEL DISPOSITIVO
      * UNA VEZ SELECCIONADA UNA SE SETEA EN EL EDITTEXT cajatextomail
+     *
      * @param view EDITTEXT cajatextomail
      */
     public void lanzarPickerCorreos(View view) {

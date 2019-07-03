@@ -15,7 +15,14 @@ import edu.cftic.fichapp.persistencia.DB;
 
 // ESTE SERVICIO NO ESTA TRABAJANDO AUN , ESTA A MEDIAS Y  PRETENDE SUSTITUIR
 // A LA ACTIVIDAD SELECCIONARINFORME PERO COMO SERVICIO
+//TODO como convertir una base de datos sqlite en un csv para posteriormente compartirlo
+// https://stackoverflow.com/questions/52358065/how-to-convert-sqlite-database-in-android-studio-and-then-share-it-as-csv-file
+// lo he puesto en este Servicio porque actualmente no se usa en esta APP esta en construccion :)
 
+// otra manera
+// https://www.javahelps.com/2015/04/import-and-use-external-database-in.html
+// y otra
+// https://www.techrepublic.com/blog/software-engineer/export-sqlite-data-from-your-android-device/
 
 public class SeleccionarInformeServicio   extends Service {
 

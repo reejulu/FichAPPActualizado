@@ -26,6 +26,7 @@ public class EnviarMailEnviarActivity extends AppCompatActivity {
             Manifest.permission.WRITE_EXTERNAL_STORAGE
     };
     private static final int CODIGO_PETICION_PERMISOS = 15;
+    Boolean compartir;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,43 +34,50 @@ public class EnviarMailEnviarActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         ActivityCompat.requestPermissions(this, PERMISOS, CODIGO_PETICION_PERMISOS);
 
-        // PASO 1: BORRAR EL FICHERO TEMPORAL EN
-        //            path = "data/data/a.bb.bbbb/files/informe.pdf"
-        //            SI EL FICHERO EXISTE HAY QUE BORRARLO PUES ESO SIGNIFICA QUE ES ANTIGUO
-        path = "data/data/edu.cftic.fichapp/files/informe.pdf";
-        File f = new File(path);
-        f.delete();
+        // HAY QUE COMPROBAR SI EL PROCESO VIENE DESDE LOGINACTIVITY
+        compartir = getIntent().getBooleanExtra("compartir",false);
+        if (compartir == true){
+            path = getIntent().getStringExtra("path");
+        }else {
 
 
-        // FICHERO ORIGEN : DONDE ESTA EL INFORME
-        // storage/emulated/0/PDF/
-        // FICHERO DESTINO : DONDE VAMOS A GUARDAR TEMPORALMENTE EL INFORME
-        // storage/emulated/0/PDF/INFORME_FICHAJE_.pdf a --> data/data/a.bb.bbbb/files/informe.pdf
+            // PASO 1: BORRAR EL FICHERO TEMPORAL EN
+            //            path = "data/data/a.bb.bbbb/files/informe.pdf"
+            //            SI EL FICHERO EXISTE HAY QUE BORRARLO PUES ESO SIGNIFICA QUE ES ANTIGUO
+            path = "data/data/edu.cftic.fichapp/files/informe.pdf";
+            File f = new File(path);
+            f.delete();
 
-        // BUSCAMOS SI EL FICHERO DESTION ORIGEN EXISTE:
-        // 1- SI EXISTE : LO COPIAMOS AL DESTINO
-        // 2- NO EXISTE : ENVIAREMOS EL E-MAIL SIN EL INFORME INDICANDO QUE NO ESTA DISPONIBLE
-        try {
-            Context context = getApplicationContext();
-            File file4 = new File(RUTA_INFORME);
-            FileInputStream is = new FileInputStream(file4);
 
-            int size = is.available();
-            byte[] buffer = new byte[size];
-            is.read(buffer);
-            is.close();
+            // FICHERO ORIGEN : DONDE ESTA EL INFORME
+            // storage/emulated/0/PDF/
+            // FICHERO DESTINO : DONDE VAMOS A GUARDAR TEMPORALMENTE EL INFORME
+            // storage/emulated/0/PDF/INFORME_FICHAJE_.pdf a --> data/data/a.bb.bbbb/files/informe.pdf
 
-            Log.i("MIAPP", "path interno es : " + path);
-            FileOutputStream fos = openFileOutput("informe.pdf", MODE_PRIVATE);
-            fos.write(buffer);
-            fos.close();
-            Log.i("MIAPP", "Se ha creado informe.pdf en data/data... : " + path);
+            // BUSCAMOS SI EL FICHERO DESTION ORIGEN EXISTE:
+            // 1- SI EXISTE : LO COPIAMOS AL DESTINO
+            // 2- NO EXISTE : ENVIAREMOS EL E-MAIL SIN EL INFORME INDICANDO QUE NO ESTA DISPONIBLE
+            try {
+                Context context = getApplicationContext();
+                File file4 = new File(RUTA_INFORME);
+                FileInputStream is = new FileInputStream(file4);
 
-        } catch (
-                Exception e) {
-            Log.i("MIAPP", "No exite el fichero en assest- continuo");
+                int size = is.available();
+                byte[] buffer = new byte[size];
+                is.read(buffer);
+                is.close();
+
+                Log.i("MIAPP", "path interno es : " + path);
+                FileOutputStream fos = openFileOutput("informe.pdf", MODE_PRIVATE);
+                fos.write(buffer);
+                fos.close();
+                Log.i("MIAPP", "Se ha creado informe.pdf en data/data... : " + path);
+
+            } catch (
+                    Exception e) {
+                Log.i("MIAPP", "No exite el fichero en assest- continuo");
+            }
         }
-
         // REQUERIMOS ENVIAR EL E-MAIL: CON O SIN FICHERO ADJUNTADO
         Intent intent = new Intent();
         intent.putExtra("MESSAGE", path);
