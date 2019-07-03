@@ -106,6 +106,8 @@ public class RegistroEmpresaActivity extends AppCompatActivity {
         String sd = Environment.getExternalStorageDirectory().toString();
         String sd1 = sd + "/" + "Download/" + DATABASE_NAME;
         File mInput = new File(sd1);
+        btnSi = findViewById(R.id.btnsi);
+        btnNo = findViewById(R.id.btnno);
 
         if (mInput.exists()== true){
             //TODO crear boton para preguntar si se desea importar los datos

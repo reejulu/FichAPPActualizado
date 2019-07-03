@@ -85,7 +85,7 @@ public class EnviarMailActivity extends AppCompatActivity {
     public String fileName = "";
     private Uri photo_uri;
     String email;
-    String mlastErrorString= "valor inicial";
+    String mlastErrorString = "valor inicial";
     String path;
     Boolean compartir;
 
@@ -112,46 +112,40 @@ public class EnviarMailActivity extends AppCompatActivity {
         Your problem will be automatically solved. Be sure to create client id and key
         with both your debug keystore and release keystore
      */
-        compartir = getIntent().getBooleanExtra("compartir",false);
-        if (compartir == true){
+        compartir = getIntent().getBooleanExtra("compartir", false);
+        if (compartir == true) {
             // El proceso viene de LoginActivity para enviar DB al Email que se ha seleccionado
             email = getIntent().getStringExtra("email");
             path = getIntent().getStringExtra("path");
-        }else {
+        } else {
             email = getIntent().getStringExtra("email");
         }
-
         init();
-
     }
 
     private void init() {
         // Initializing Internet Checker
         internetDetector = new InternetDetector(getApplicationContext());
-
         // Initialize credentials and service object.
         mCredential = GoogleAccountCredential.usingOAuth2(
                 getApplicationContext(), Arrays.asList(SCOPES))
                 .setBackOff(new ExponentialBackOff());
-
         //DATOS PARA ENVIAR EL INFORME
-
         emaildestion = email;
-        if (compartir == true){
+        if (compartir == true) {
             emailtitulo = "BASE de DATOS";
             emailmensaje = "Se adjunta el fichero actual de la base de datos";
-        }else {
+        } else {
             emailtitulo = "Informe";
             emailmensaje = "Adjunto se envia el fichero .pdf con el reporte mensual";
         }
         // request to attacth the report pdf file to the e-mail
         Intent intent = new Intent(this, EnviarMailEnviarActivity.class);
         // En caso de venir desde LoginActivity tenemos que adjuntar filepath y boolen
-        if (compartir == true){
-            intent.putExtra("compartir",true);
-            intent.putExtra("path",path);
+        if (compartir == true) {
+            intent.putExtra("compartir", true);
+            intent.putExtra("path", path);
         }
-
         startActivityForResult(intent, Utils.REQUEST_INSERT_FILE_REPORT);
         // The execution will continue in onActivityResult for REQUEST_INSERT_FILE_REPORT(2)
     }
@@ -160,6 +154,7 @@ public class EnviarMailActivity extends AppCompatActivity {
     private void showMessage(View view, String message) {
         Snackbar.make(view, message, Snackbar.LENGTH_LONG).show();
     }
+
     private void getResultsFromApisinTemplate() {
         Log.i("MIAPP", "Lista de mCredential es : " + mCredential.getAllAccounts().toString());
         if (!isGooglePlayServicesAvailable()) {
@@ -178,7 +173,6 @@ public class EnviarMailActivity extends AppCompatActivity {
         } else {
             new MakeRequestTask(this, mCredential).execute();
         }
-
     }
 
     // Method for Checking Google Play Service is Available
@@ -312,7 +306,6 @@ public class EnviarMailActivity extends AppCompatActivity {
 
     // Async Task for sending Mail using GMail OAuth
     private class MakeRequestTask extends AsyncTask<Void, Void, String> {
-
         private com.google.api.services.gmail.Gmail mService = null;
         private Exception mLastError = null;
         private View view = sendFabButton;
@@ -335,7 +328,7 @@ public class EnviarMailActivity extends AppCompatActivity {
                 return getDataFromApi();
             } catch (Exception e) {
                 mLastError = e;
-                mlastErrorString = "Error"+ e;
+                mlastErrorString = "Error" + e;
                 cancel(true);
                 return null;
             }
@@ -388,15 +381,12 @@ public class EnviarMailActivity extends AppCompatActivity {
             email.setFrom(fAddress);
             email.addRecipient(javax.mail.Message.RecipientType.TO, tAddress);
             email.setSubject(subject);
-
             // Create Multipart object and add MimeBodyPart objects to this object
             Multipart multipart = new MimeMultipart();
-
             // Changed for adding attachment and text
             BodyPart textBody = new MimeBodyPart();
             textBody.setText(bodyText);
             multipart.addBodyPart(textBody);
-
             if (!(activity.fileName.equals(""))) {
                 // Create new MimeBodyPart object and set DataHandler object to this object
                 MimeBodyPart attachmentBody = new MimeBodyPart();
@@ -406,7 +396,6 @@ public class EnviarMailActivity extends AppCompatActivity {
                 attachmentBody.setFileName(filename);
                 multipart.addBodyPart(attachmentBody);
             }
-
             //Set the multipart object to the message object
             email.setContent(multipart);
             return email;
@@ -418,7 +407,6 @@ public class EnviarMailActivity extends AppCompatActivity {
             email.writeTo(bytes);
             String encodedEmail = Base64.encodeBase64URLSafeString(bytes.toByteArray());
             Message message = new Message();
-
             message.setRaw(encodedEmail);
             return message;
         }
@@ -432,9 +420,9 @@ public class EnviarMailActivity extends AppCompatActivity {
             //        mProgress.hide();
             Log.i("MIAPP", "onPostExecute - he terminado de enviar el email");
             finish();
-            if (compartir == true){
+            if (compartir == true) {
                 mlastErrorString = "NO ENVIAR NOTIFICACION";
-            }else {
+            } else {
                 mlastErrorString = "ENVIADO CORRECTAMENTE";
             }
             Intent intent_reciver = new Intent("SERVICIO_TERMINADO_FICHAPP");
@@ -449,19 +437,19 @@ public class EnviarMailActivity extends AppCompatActivity {
                     showGooglePlayServicesAvailabilityErrorDialog(
                             ((GooglePlayServicesAvailabilityIOException) mLastError)
                                     .getConnectionStatusCode());
-                    mlastErrorString = "Error en Google Services"+mLastError;
+                    mlastErrorString = "Error en Google Services" + mLastError;
                 } else if (mLastError instanceof UserRecoverableAuthIOException) {
                     startActivityForResult(
                             ((UserRecoverableAuthIOException) mLastError).getIntent(),
                             Utils.REQUEST_AUTHORIZATION);
-                    mlastErrorString = "Error en Autorizacion"+mLastError;
+                    mlastErrorString = "Error en Autorizacion" + mLastError;
                 } else {
                     Log.v("Error", mLastError + "");
                 }
             } else {
-                mlastErrorString = "Error"+mLastError;
+                mlastErrorString = "Error" + mLastError;
             }
-            if (compartir == true){
+            if (compartir == true) {
                 mlastErrorString = "NO ENVIAR NOTIFICACION";
             }
             Intent intent_reciver = new Intent("SERVICIO_TERMINADO_FICHAPP");

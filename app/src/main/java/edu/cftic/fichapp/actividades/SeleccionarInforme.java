@@ -16,7 +16,6 @@ public class SeleccionarInforme extends AppCompatActivity {
 
     private ArrayList<Empleado> datos;
     private DB bdd;
-
     Boolean pdfcreado;
     Boolean crearpdf;
     Boolean existenEmpleados;
@@ -28,26 +27,24 @@ public class SeleccionarInforme extends AppCompatActivity {
         // CREO LISTA DE EMPLEADOS
         datos = new ArrayList<Empleado>();
         datos = (ArrayList<Empleado>) DB.empleados.getEmpleados();
-        if (DB.empleados.getEmpleados().size()>0){
+        if (DB.empleados.getEmpleados().size() > 0) {
             existenEmpleados = true;
-        }else {
+        } else {
             existenEmpleados = false;
         }
-
         // COMPROBACION SI HAY ALGUN EMPLEADO DEFINIDO
-        if (existenEmpleados == false){
+        if (existenEmpleados == false) {
             // COMO NO HAY NINGUNO DEFINIDO VUELVO A DEFINIR EL GESTOR DE ALARMA
-                 GestorAlarma gestorAlarma = new GestorAlarma(getBaseContext());
-                 gestorAlarma.programarAlarma();
-                 finish();
+            GestorAlarma gestorAlarma = new GestorAlarma(getBaseContext());
+            gestorAlarma.programarAlarma();
+            finish();
         }
-
 
         // LA PRIMERA VEZ: QUE SE LLAMA A ESTE METODO EL FICHERO NO ESTA CREADO POR TANTO SE VA
         // POR LA OPCTION - ELSE (PARA CREAR EL PDF)
         //
         // LA SEGUNDA VEZ: EL PDF YA DEBE ESTAR CREADO Y HA DE ENVIAR EL E-MAIL CON EL PDF
-        if (getIntent().getBooleanExtra("YACREADO",false)) {
+        if (getIntent().getBooleanExtra("YACREADO", false)) {
             // YA ESTA CREADO AHORA LANZAR EN ENVIO DEL E-MAIL CON EL FICHERO DEL INFORME PDF
 
             // PREVIAMENTE HEMOS COMPROBADO QUE HAY AL MENOS UN EMPLEADO DEFINIDO-
@@ -56,7 +53,7 @@ public class SeleccionarInforme extends AppCompatActivity {
             // TODO hay que obener la empresa de este empleado y luego el e-mail de esta empresa
 
             //int posicion = getIntent().getIntExtra("identidadEmpleado", 25);
-           // Empleado nu = DB.empleados.getEmpleadoId(posicion);
+            // Empleado nu = DB.empleados.getEmpleadoId(posicion);
             Empleado nu = DB.empleados.primero();
 
             String email = nu.getEmpresa().getEmail();
@@ -64,7 +61,7 @@ public class SeleccionarInforme extends AppCompatActivity {
             intent.putExtra("email", email);
             startActivity(intent);
             finish();
-        }else {
+        } else {
 
             // CREAR FICHERO MENSUAL
             crearpdf = true;
@@ -80,5 +77,4 @@ public class SeleccionarInforme extends AppCompatActivity {
             // indicando que ya esta creado.
         }
     }
-
 }
