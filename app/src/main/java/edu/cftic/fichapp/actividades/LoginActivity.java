@@ -132,6 +132,16 @@ public class LoginActivity extends AppCompatActivity {
                 empleadoNombreSpinner.setVisibility(View.INVISIBLE);
                 btn1 = findViewById(R.id.aceptar);
                 btn1.setText("IMPORTAR BASE DATOS EXTERNA -> CONTRASEÑA CORRECTA");
+            }else {
+                Toast.makeText(this, "OPCION CANCELADA- NO HAY BASE DE DATOS -", Toast.LENGTH_SHORT).show();
+                btn1 = findViewById(R.id.aceptar);
+                empleadoNombreSpinner = findViewById(R.id.usuario);
+                incorrecto = findViewById(R.id.incorrecto);
+                btn1.setText("ACEPTAR");
+                empleadoNombreSpinner.setVisibility(View.VISIBLE);
+                incorrecto.setVisibility(View.VISIBLE);
+                txt1.setText("Bienvenid@");
+                txt1.setTextColor(getResources().getColor(R.color.black_overlay));
             }
 
         } else if (item.getItemId() == R.id.compartir) {
@@ -305,7 +315,7 @@ public class LoginActivity extends AppCompatActivity {
     public void creditos(View view) {
         Intent intent = new Intent(this, Creditos.class);
         startActivity(intent);
-        finish();
+        //finish();
     }
 
     private void lanzarActividad(Class actividad_destino) {

@@ -2,24 +2,39 @@ package edu.cftic.fichapp.util;
 
 
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
+import android.graphics.drawable.AdaptiveIconDrawable;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.graphics.drawable.LayerDrawable;
+import android.media.Image;
+import android.os.Build;
+import android.support.annotation.RequiresApi;
+import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v7.widget.AppCompatImageView;
 import android.util.AttributeSet;
+import android.view.View;
 import android.widget.ImageView;
 
+import java.util.ArrayList;
+
+import edu.cftic.fichapp.R;
+import edu.cftic.fichapp.bean.Programador;
+import io.opencensus.resource.Resource;
+
 /**
- * Created by vale on 3/03/17.
+ * Created by dell on 5/25/2017.
  */
-public class RoundedImageView extends AppCompatImageView
-{
+
+public class RoundedImageView extends AppCompatImageView {
 
     public RoundedImageView(Context context) {
         super(context);
@@ -45,7 +60,7 @@ public class RoundedImageView extends AppCompatImageView
         if (getWidth() == 0 || getHeight() == 0) {
             return;
         }
-        Bitmap b = ((BitmapDrawable) drawable).getBitmap();
+        Bitmap b = drawableToBitmap(drawable);
         Bitmap bitmap = b.copy(Bitmap.Config.ARGB_8888, true);
 
         int w = getWidth();
@@ -55,6 +70,28 @@ public class RoundedImageView extends AppCompatImageView
         Bitmap roundBitmap = getCroppedBitmap(bitmap, w);
         canvas.drawBitmap(roundBitmap, 0, 0, null);
 
+    }
+
+    public static Bitmap drawableToBitmap(Drawable drawable) {
+        Bitmap bitmap = null;
+
+        if (drawable instanceof BitmapDrawable) {
+            BitmapDrawable bitmapDrawable = (BitmapDrawable) drawable;
+            if (bitmapDrawable.getBitmap() != null) {
+                return bitmapDrawable.getBitmap();
+            }
+        }
+
+        if (drawable.getIntrinsicWidth() <= 0 || drawable.getIntrinsicHeight() <= 0) {
+            bitmap = Bitmap.createBitmap(1, 1, Bitmap.Config.ARGB_8888); // Single color bitmap will be created of 1x1 pixel
+        } else {
+            bitmap = Bitmap.createBitmap(drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
+        }
+
+        Canvas canvas = new Canvas(bitmap);
+        drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
+        drawable.draw(canvas);
+        return bitmap;
     }
 
     public static Bitmap getCroppedBitmap(Bitmap bmp, int radius) {

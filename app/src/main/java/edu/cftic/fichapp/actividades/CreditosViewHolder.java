@@ -1,6 +1,7 @@
 package edu.cftic.fichapp.actividades;
 
 import android.content.Context;
+import android.os.Build;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.View;
@@ -37,14 +38,17 @@ public class CreditosViewHolder extends RecyclerView.ViewHolder {
     public void cargarCreditosEnHolder(Programador programador) {
 
         imag_view_imagen.setImageResource(R.mipmap.ic_launcher);
-        if (null != programador.getImagen()) {
-            int drawableResourceId = contexto.getResources().getIdentifier(programador.getImagen().toLowerCase(), "drawable", contexto.getPackageName());
-            if( 0 != drawableResourceId) {
-                imag_view_imagen.setImageResource(drawableResourceId);
-            }
-        }
 
-        text_view_nombre.setText(programador.getNombre());
+
+            if (null != programador.getImagen()) {
+                int drawableResourceId = contexto.getResources().getIdentifier(programador.getImagen().toLowerCase(), "drawable", contexto.getPackageName());
+                if (0 != drawableResourceId) {
+                    imag_view_imagen.setImageResource(drawableResourceId);
+                }
+            }
+
+
+            text_view_nombre.setText(programador.getNombre());
 
 
         List<Social> sociales = programador.getSocial();
