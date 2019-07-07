@@ -103,7 +103,16 @@ public class RegistroEntradaSalida extends AppCompatActivity implements AdapterV
         } else {
             // Tipo fichaje 1 es fichaje de salida (Modificar fichaje)
             tipoFichaje = 2;
-            if (!ultimoFichaje.getFechainicio().equals(new Timestamp(0))){
+
+           // Timestamp t = new Timestamp(0);   //1970-01-01T01:00:00.000+0100
+            java.text.SimpleDateFormat sfd = new java.text.SimpleDateFormat("yyyyMMdd");
+            // LEEMOS DIA ACTUAL
+            Date dateactual = new Date();
+            String diaactual = sfd.format(dateactual.getTime());
+            // OBTENEMOS EL DIA DE LA FICAHADA INICIAL
+            String diafichada = sfd.format(ultimoFichaje.getFechainicio());
+
+            if (!diaactual.equals(diafichada)){
                 // asumo que se olvido fichar en salida y esta fichada
                 // pasa a ser de llegada
                 tipoFichaje = 1;

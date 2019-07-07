@@ -35,7 +35,7 @@ public class MenuGestorActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu_gestor);
         u = (Empleado) getIntent().getExtras().get(Constantes.EMPLEADO);
-        
+
         TextView empleado = findViewById(R.id.txtEmpleado);
         empleado.setText(u.getNombre().toString());
 
