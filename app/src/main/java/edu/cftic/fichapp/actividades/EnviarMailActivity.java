@@ -389,12 +389,37 @@ public class EnviarMailActivity extends AppCompatActivity {
             multipart.addBodyPart(textBody);
             if (!(activity.fileName.equals(""))) {
                 // Create new MimeBodyPart object and set DataHandler object to this object
-                MimeBodyPart attachmentBody = new MimeBodyPart();
-                String filename = activity.fileName; // change accordingly
-                DataSource source = new FileDataSource(filename);
-                attachmentBody.setDataHandler(new DataHandler(source));
-                attachmentBody.setFileName(filename);
-                multipart.addBodyPart(attachmentBody);
+                if (compartir == true){
+                    // se van a insertar tres ficheros
+                    // DBControl.db,DBControl.db-shm,DBControl.db-wal
+                    MimeBodyPart attachmentBody = new MimeBodyPart();
+                    String filename = activity.fileName; // change accordingly
+                    DataSource source = new FileDataSource(filename);
+                    attachmentBody.setDataHandler(new DataHandler(source));
+                    attachmentBody.setFileName(filename);
+                    multipart.addBodyPart(attachmentBody);
+
+                    MimeBodyPart attachmentBodyshm = new MimeBodyPart();
+                    String filenameshm = activity.fileName+"-shm"; // change accordingly
+                    DataSource sourceshm = new FileDataSource(filenameshm);
+                    attachmentBodyshm.setDataHandler(new DataHandler(sourceshm));
+                    attachmentBodyshm.setFileName(filenameshm);
+                    multipart.addBodyPart(attachmentBodyshm);
+
+                    MimeBodyPart attachmentBodywal = new MimeBodyPart();
+                    String filenamewal = activity.fileName+"-wal"; // change accordingly
+                    DataSource sourcewal = new FileDataSource(filenamewal);
+                    attachmentBodywal.setDataHandler(new DataHandler(sourcewal));
+                    attachmentBodywal.setFileName(filenamewal);
+                    multipart.addBodyPart(attachmentBodywal);
+                }else {
+                    MimeBodyPart attachmentBody = new MimeBodyPart();
+                    String filename = activity.fileName; // change accordingly
+                    DataSource source = new FileDataSource(filename);
+                    attachmentBody.setDataHandler(new DataHandler(source));
+                    attachmentBody.setFileName(filename);
+                    multipart.addBodyPart(attachmentBody);
+                }
             }
             //Set the multipart object to the message object
             email.setContent(multipart);

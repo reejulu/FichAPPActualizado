@@ -34,10 +34,14 @@ public class MenuGestorActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu_gestor);
-        u = (Empleado) getIntent().getExtras().get(Constantes.EMPLEADO);
+        if (getIntent().getExtras()== null){
+            //VIENE DE RegistorEmpleadoActivity , tras borrar o modificar
+        }else {
+            u = (Empleado) getIntent().getExtras().get(Constantes.EMPLEADO);
 
-        TextView empleado = findViewById(R.id.txtEmpleado);
-        empleado.setText(u.getNombre().toString());
+            TextView empleado = findViewById(R.id.txtEmpleado);
+            empleado.setText(u.getNombre().toString());
+        }
 
         // recoger la empresa y setear el logo en el boton de empresa
         ImageView logo = findViewById(R.id.logo_empresa);

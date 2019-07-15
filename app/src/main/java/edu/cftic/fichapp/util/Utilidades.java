@@ -22,6 +22,7 @@ import java.util.regex.Pattern;
 import edu.cftic.fichapp.bean.Empleado;
 import edu.cftic.fichapp.bean.Empresa;
 import edu.cftic.fichapp.persistencia.DB;
+import edu.cftic.fichapp.persistencia.DataBaseHelper;
 
 public class Utilidades {
 
@@ -37,7 +38,6 @@ public class Utilidades {
 
     public static boolean hayEmpresa() {
         boolean b = false;
-
         Empresa empresa = DB.empresas.primero();
         if (empresa != null) {
             b = true;

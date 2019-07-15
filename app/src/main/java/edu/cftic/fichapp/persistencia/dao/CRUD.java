@@ -32,7 +32,7 @@ public abstract class CRUD {
         try {
             cursor = bd.query(tabla, columnas, seleccion, argumentos, null, null, null);
         } catch (Throwable t){
-            Log.i("APP", "Error CRUD -1 ");
+            Log.i("FichApp", "Error CRUD -1 ");
             return cursor;
         }
         return cursor;
@@ -46,7 +46,7 @@ public abstract class CRUD {
         try {
             cursor = bd.query(tabla, columnas, seleccion, argumentos, null, null, orden);
         } catch (Throwable t) {
-            Log.i("APP", "Error CRUD -2 ");
+            Log.i("FichApp", "Error CRUD -2 ");
             return cursor;
         }
         return cursor;
@@ -58,7 +58,7 @@ public abstract class CRUD {
         try {
             cursor = bd.query(tabla, columnas, seleccion, argumentos, null, null, orden, limite);
         } catch (Throwable t) {
-            Log.i("APP", "Error CRUD -3 ");
+            Log.i("FichApp", "Error CRUD -3 ");
             return cursor;
         }
         return cursor;
@@ -70,7 +70,7 @@ public abstract class CRUD {
         try {
             cursor = bd.query(tabla, columnas, seleccion, argumentos, agrupado, having, orden, limite);
         } catch (Throwable t) {
-            Log.i("APP", "Error CRUD -4 ");
+            Log.i("FichApp", "Error CRUD -4 ");
             return cursor;
         }
         return cursor;

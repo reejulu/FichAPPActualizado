@@ -38,6 +38,7 @@ public class ModificarCrearBorrarActivity extends AppCompatActivity {
     Button btnNo;
     RecyclerView Recyclervista;
     int position;
+    Empleado empleado = new Empleado();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,12 +60,22 @@ public class ModificarCrearBorrarActivity extends AppCompatActivity {
 
         //cargarDatosPrueba();
 
-        datos = (ArrayList<Empleado>) DB.empleados.getEmpleados();
+        //listaEmpleados = (ArrayList<Empleado>) DB.empleados.getEmpleados();
+        //Log.i("FichApp","ListaEmpleados ahora es: "+listaEmpleados.toString());
+        ArrayList<String> arrayEmpleados = new ArrayList<>();
+        //for (Empleado empleado : listaEmpleados) {
+        //    arrayEmpleados.add(empleado.getUsuario() + " ---> " + empleado.getRol().toString());
+       // }
+
+        datos = (ArrayList<Empleado>) bdd.empleados.getEmpleados();
+        Log.i("FichApp","ListaEmpleados ahora es: "+datos.toString());
+        for (Empleado empleado : datos) {
+            arrayEmpleados.add(empleado.getUsuario() );
+        }
 
         recView = (RecyclerView) findViewById(R.id.RecView);
 
         adaptador = new AdapterEmpleados(datos);
-
 
         recView.setAdapter(adaptador);
 
@@ -138,7 +149,7 @@ public class ModificarCrearBorrarActivity extends AppCompatActivity {
         btnSi.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                datos.remove(position);
+
                 adaptador.notifyDataSetChanged();
                 txtBorrar.setVisibility(View.INVISIBLE);
                 txtNombreaBorrar.setVisibility(View.INVISIBLE);
@@ -148,8 +159,26 @@ public class ModificarCrearBorrarActivity extends AppCompatActivity {
 
 
                 // TODO hay que actualizar BD con el elemento quitado
-                int id = datos.get(position).getId_empleado();
-                DB.empleados.eliminar(id);
+                int posicion_tocada = position;
+                empleado = datos.get(posicion_tocada);
+                String jaja = empleado.getNombre().toString();
+                Log.i("FichApp","ModificarCrearBorrarActivity-btnSi-empleado es : "+jaja);
+                bdd.empleados.eliminar(empleado.getId_empleado());
+                datos.remove(position);
+
+                //int id = datos.get(position).getId_empleado();
+                Log.i("FichApp","ModificarCrearBorrarActivity-btnSi-id empleado es: "+empleado.getId_empleado());
+                //db.empleados.eliminar(empleado.getId_empleado());
+               // bdd.empleados.eliminar(id);
+               // bdd.open();
+
+                datos = (ArrayList<Empleado>) bdd.empleados.getEmpleados();
+                Log.i("FichApp","ModificarCrearBorrarActivity-btnSi-datos.size es : "+datos.size());
+                recView = (RecyclerView) findViewById(R.id.RecView);
+
+                adaptador = new AdapterEmpleados(datos);
+                recView.setAdapter(adaptador);
+
             }
         });
 
@@ -170,7 +199,23 @@ public class ModificarCrearBorrarActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    protected void onResume() {
 
+        datos = (ArrayList<Empleado>) bdd.empleados.getEmpleados();
+        Log.i("FichApp","ModificarCrearBorrarActivity-onResume-datos.size es : "+datos.size());
+        recView = (RecyclerView) findViewById(R.id.RecView);
+
+        adaptador = new AdapterEmpleados(datos);
+        recView.setAdapter(adaptador);
+
+        recView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
+
+        recView.addItemDecoration(
+                new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
+
+        super.onResume();
+    }
     /*private void cargarDatosPrueba() {
 
                 *//*

@@ -2,10 +2,12 @@ package edu.cftic.fichapp.actividades;
 
 import android.accounts.Account;
 import android.accounts.AccountManager;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
@@ -41,6 +43,7 @@ import edu.cftic.fichapp.bean.Empleado;
 import edu.cftic.fichapp.bean.Empresa;
 import edu.cftic.fichapp.persistencia.DB;
 import edu.cftic.fichapp.persistencia.DataBaseHelper;
+import edu.cftic.fichapp.persistencia.interfaces.TestAdapter;
 import edu.cftic.fichapp.util.Constantes;
 import edu.cftic.fichapp.util.FocusListenerFormularios;
 import edu.cftic.fichapp.util.Utilidades;
@@ -69,6 +72,7 @@ public class RegistroEmpresaActivity extends AppCompatActivity {
     Button btnSi;
     Button btnNo;
     private Empleado u = null;
+    Intent intent2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -141,26 +145,41 @@ public class RegistroEmpresaActivity extends AppCompatActivity {
                 LinearLayout uno = findViewById(R.id.linearoot);
                 uno.setVisibility(View.VISIBLE);
                 if (mInput.exists()) {
-                    Log.i("FichApp", "MenuGestorActivity- Existe BD en External memory y puede ser importado");
+                    Log.i("FichApp", "RegistroEmpresaActivity- Existe BD en External memory y puede ser importado");
+
+                    // BORRAR BASE DE DATOS ACTUAL - FICHEROS
+                    Context contexto  = getApplicationContext();
+                    borrarBD(contexto);
+                    // IMPORTAR LOS FICHEROS DE BASE DE DATOS
+                    // BDControl.db,BDControl.db-shm,BDControl.db-wal
                     try {
-                        dbhelper.importDB();
+                        dataBase.importDB();
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
-                    //  mInput.delete();
 
+                    // REINICIAR  LA APLICACION PARA ACTUALIZAR LA BASE DE DATOS IMPORTADA
+                    intent2 = new Intent(getBaseContext(), LoginActivity.class);
+                    startActivity(intent2);
+                    finishAffinity();
+                    System.exit(0);
+
+                        /*
+                        intent2 = new Intent(getBaseContext(), LoginActivity.class);
+                        intent2.putExtra("deRegistroEmpresa", false);
+                        startActivity(intent2);
+                        finish();
+                        */
+
+                }else {
+                    Intent intent = new Intent(getBaseContext(), LoginActivity.class);
+                    startActivity(intent);
+                    finish();
                 }
-                //Empleado u = DB.empleados.primero();
-                //Intent intent = new Intent(getBaseContext(), MenuGestorActivity.class);
-                //intent.putExtra(Constantes.EMPLEADO, u);
-                //startActivity(intent);
-               // u = (Empleado) getIntent().getExtras().get(Constantes.EMPLEADO);
-                Intent intent = new Intent(getBaseContext(), LoginActivity.class);
-                startActivity(intent);
-                finish();
 
             }
         });
+
 
         btnNo.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -180,6 +199,14 @@ public class RegistroEmpresaActivity extends AppCompatActivity {
 
     }
 
+    public void borrarBD(Context context) {
+        DB.DBH db;
+        SQLiteDatabase myDataBase;
+        Context contexto  = context;
+        db = new DB.DBH(contexto);
+        myDataBase = db.getWritableDatabase();
+        contexto.deleteDatabase(DATABASE_NAME);
+    }
     /**
      * METODO QUE RECIBI LA VUELTA DE LA PETICIÓN DE SERVICIOS, EN FUNCIÓN DE LA RESPUESTA PASA POR UNO U OTRO CAMINO
      *
@@ -191,10 +218,10 @@ public class RegistroEmpresaActivity extends AppCompatActivity {
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         // super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if ((grantResults[0] == PackageManager.PERMISSION_GRANTED) && (grantResults[1] == PackageManager.PERMISSION_GRANTED)) {
-            Log.d("MIAPP", "Me ha concedido los permisos");
+            Log.i("MIAPP", "Me ha concedido los permisos");
 
         } else {
-            Log.d("MIAPP", "NO ME ha concedido los permisos");
+            Log.i("MIAPP", "NO ME ha concedido los permisos");
             Toast.makeText(this, "No puedes seguir", Toast.LENGTH_SHORT).show();
             this.finish();
         }
@@ -238,7 +265,7 @@ public class RegistroEmpresaActivity extends AppCompatActivity {
             for (Account cuenta : lista_cuentas)
             {
 
-                Log.d(getClass().getCanonicalName(), " Cuenta = " + cuenta.name);
+                Log.i(getClass().getCanonicalName(), " Cuenta = " + cuenta.name);
                 if (cuenta.type.equals("com.google")) //si la cuenta es de gmail
                 {
                     str_aux = str_aux + cuenta.name+",";
@@ -250,10 +277,10 @@ public class RegistroEmpresaActivity extends AppCompatActivity {
                 cuentas_mail = componerListaCorreos(str_aux.substring(0, str_aux.length() - 1));
             } else //cuentas = 0
             {
-                Log.d(getClass().getCanonicalName(), " NO HAY CUENTAS ");
+                Log.i(getClass().getCanonicalName(), " NO HAY CUENTAS ");
             }
         }else {
-            Log.d(getClass().getCanonicalName(), "No consigo ver las cuentas. ");
+            Log.i(getClass().getCanonicalName(), "No consigo ver las cuentas. ");
         }
 
 
@@ -279,7 +306,7 @@ public class RegistroEmpresaActivity extends AppCompatActivity {
      * @param view ImageButton que activa el método
      */
     public void seleccionarFoto(View view) {
-        Log.d("MIAPP", "Quiere seleccionar una foto");
+        Log.i("MIAPP", "Quiere seleccionar una foto");
         Intent intent_pide_foto = new Intent();
         intent_pide_foto.setAction(Intent.ACTION_GET_CONTENT);
         intent_pide_foto.setType("image/*"); // tipo mime
@@ -329,13 +356,13 @@ public class RegistroEmpresaActivity extends AppCompatActivity {
     private void setearImagenDesdeArchivo(int resultado, Intent data) {
         switch (resultado) {
             case RESULT_OK:
-                Log.d("MIAPP", "La foto ha sido seleccionada");
+                Log.i("MIAPP", "La foto ha sido seleccionada");
                 this.photo_uri = data.getData();
                 this.imageView.setImageURI(photo_uri);
                 break;
 
             case RESULT_CANCELED:
-                Log.d("MIAPP", "La foto no ha sido seleccionada canceló");
+                Log.i("MIAPP", "La foto no ha sido seleccionada canceló");
                 break;
         }
     }
@@ -367,11 +394,11 @@ public class RegistroEmpresaActivity extends AppCompatActivity {
         cajatextomail.setText(empresa.getEmail());
 
         if(empresa.getRutalogo()!= null) {
-            Log.d(Constantes.TAG_APP, "RUTA =  " + empresa.getRutalogo());
+            Log.i(Constantes.TAG_APP, "RUTA =  " + empresa.getRutalogo());
             /*String[] array = empresa.getRutalogo().split("%");
             String nuevaRuta = array[0] +"%25"+ array[1];
-            Log.d(Constantes.TAG_APP, "nuevaRuta " +nuevaRuta);*/
-            Log.d(Constantes.TAG_APP, "RUTA =  " + empresa.getRutalogo());
+            Log.i(Constantes.TAG_APP, "nuevaRuta " +nuevaRuta);*/
+            Log.i(Constantes.TAG_APP, "RUTA =  " + empresa.getRutalogo());
             imageView.setImageURI(Uri.parse(empresa.getRutalogo() ));
         }
 
@@ -456,9 +483,9 @@ public class RegistroEmpresaActivity extends AppCompatActivity {
         String email = cajatextomail.getText().toString();
         String urlLogo= null;
         if (photo_uri != null){
-            Log.d(Constantes.TAG_APP," uri " + photo_uri);
+            Log.i(Constantes.TAG_APP," uri " + photo_uri);
             urlLogo = Utilidades.getPath(this,photo_uri);
-            Log.d(Constantes.TAG_APP," uri " + urlLogo);
+            Log.i(Constantes.TAG_APP," uri " + urlLogo);
         }
 
         if(cif.length() != 0){
@@ -470,7 +497,7 @@ public class RegistroEmpresaActivity extends AppCompatActivity {
                         empresa.setNombre_empresa(nombreEmpresa);
                         empresa.setResponsable(responsable);
                         empresa.setEmail(email);
-                        Log.d(Constantes.TAG_APP," uri " + urlLogo);
+                        Log.i(Constantes.TAG_APP," uri " + urlLogo);
                         if(urlLogo!=null){
                             empresa.setRutalogo(urlLogo);
                         }
@@ -515,7 +542,7 @@ public class RegistroEmpresaActivity extends AppCompatActivity {
     filePath = photo_uri.getPath();
     }
     }
-    Log.d("MIAPP", "Chosen path = " + filePath);
+    Log.i("MIAPP", "Chosen path = " + filePath);
 
     return filePath;
     }

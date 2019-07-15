@@ -100,7 +100,7 @@ public class RegistroEmpleadoActivity extends AppCompatActivity {
         if (item.getItemId() == android.R.id.home)
         // android.R recurso global no solo de mi app
         {
-            Log.d("MIAPP", "Tocada la flecha");
+            Log.i("MIAPP", "Tocada la flecha");
             this.finish();
         }
 
@@ -130,8 +130,9 @@ public class RegistroEmpleadoActivity extends AppCompatActivity {
         recogerDatos();
         db.empleados.actualizar(empleado);
         Toast.makeText(this, "El empleado: "+ empleado.getNombre() + " ha sido modificado.", Toast.LENGTH_LONG).show();
-        Intent intent = new Intent(this, MenuGestorActivity.class);
-        startActivity(intent);
+        //Intent intent = new Intent(this, MenuGestorActivity.class);
+        //startActivity(intent);
+        finish();
     }
 
 
@@ -146,9 +147,13 @@ public class RegistroEmpleadoActivity extends AppCompatActivity {
         dialogo1.setPositiveButton("Confirmar", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialogo1, int id) {
                 db.empleados.eliminar(empleado.getId_empleado());
+                Log.i("FichApp","RegistroEmpleadoActivity-EliminarUsuario-id empleado es: "+empleado.getId_empleado());
 
-                //Intent intent = new Intent(this, MenuGestorActivity.class);
+
+                //Intent intent = new Intent(getApplicationContext(), MenuGestorActivity.class);
+                //Intent intent = new Intent(getApplicationContext(),ModificarCrearBorrarActivity.class);
                 //startActivity(intent);
+                finish();
             }
 
         });
@@ -159,8 +164,8 @@ public class RegistroEmpleadoActivity extends AppCompatActivity {
         });
         dialogo1.show();
 
-        Intent intent = new Intent(this, MenuGestorActivity.class);
-        startActivity(intent);
+       // Intent intent = new Intent(this, MenuGestorActivity.class);
+       // startActivity(intent);
     }
 
 

@@ -1,5 +1,6 @@
 package edu.cftic.fichapp.actividades;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
@@ -22,6 +23,7 @@ import java.util.ArrayList;
 
 import edu.cftic.fichapp.R;
 import edu.cftic.fichapp.bean.Empleado;
+import edu.cftic.fichapp.bean.Empresa;
 import edu.cftic.fichapp.persistencia.DB;
 import edu.cftic.fichapp.persistencia.DataBaseHelper;
 import edu.cftic.fichapp.util.Constantes;
@@ -42,6 +44,12 @@ public class LoginActivity extends AppCompatActivity {
     View v;
     View v1;
     String email;
+    DB dataBase;
+
+    private Empresa empresa;
+
+    private boolean viene_de_registro = false;
+    Bundle extras;
 
 
     @Override
@@ -49,17 +57,38 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         empleadoNombreSpinner = findViewById(R.id.usuario);
+        Log.i("FichApp","LoginActivity-onCreate");
+        dataBase = new DB();
+        empresa = dataBase.empresas.primero();
 
-        if (!Utilidades.hayEmpresa()) {
-            lanzarActividad(RegistroEmpresaActivity.class);
-        } else { //hay empresa
-            if (!Utilidades.hayGestor()) {//no hay gestor
-                lanzarActividad(RegistroEmpleadoActivity.class);
-            }  //hay empresa y gestor
-            //sigo en el login
+        //Recuperación de los datos del Intent
+        Intent intent = getIntent();
+        viene_de_registro = intent.getBooleanExtra("deRegistroEmpresa",false);
+        extras = getIntent().getExtras();
+        if (extras != null) {
+
+        viene_de_registro = extras.getBoolean("deRegistroEmpresa", false);
+        }
+        Boolean viene_de_registro1 = getIntent().getBooleanExtra("deRegistroEmpresa",false);
+        Log.i("FichApp","LoginActivity- viene de registro si vale true :::" + viene_de_registro);
+        Log.i("FichApp","LoginActivity- viene de registro1 si vale true :::" + viene_de_registro1);
+        if (viene_de_registro == false){
+
+
+            if (!Utilidades.hayEmpresa()) {
+                lanzarActividad(RegistroEmpresaActivity.class);
+            } else { //hay empresa
+                if (!Utilidades.hayGestor()) {//no hay gestor
+                    lanzarActividad(RegistroEmpleadoActivity.class);
+                }  //hay empresa y gestor
+                //sigo en el login
+            }
+        }else {
+
         }
         //usuario = findViewById(R.id.usuario);
         listaEmpleados = (ArrayList<Empleado>) DB.empleados.getEmpleados();
+        Log.i("FichApp","ListaEmpleados ahora es: "+listaEmpleados.toString());
         ArrayList<String> arrayEmpleados = new ArrayList<>();
         for (Empleado empleado : listaEmpleados) {
             arrayEmpleados.add(empleado.getUsuario() + " ---> " + empleado.getRol().toString());
@@ -73,7 +102,7 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 u = listaEmpleados.get(position);
-                Log.d(Constantes.TAG_APP, "pos: " + listaEmpleados.get(position));
+                Log.i(Constantes.TAG_APP, "pos: " + listaEmpleados.get(position));
                 nombre = u.getUsuario();
                 v = findViewById(R.id.compartir);
                 v1 = findViewById(R.id.importar);
@@ -96,6 +125,22 @@ public class LoginActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
+    @Override
+    protected void onResume() {
+        Log.i("FichApp","LoginActivity-onResume");
+        listaEmpleados = (ArrayList<Empleado>) DB.empleados.getEmpleados();
+
+        ArrayList<String> arrayEmpleados = new ArrayList<>();
+        for (Empleado empleado : listaEmpleados) {
+            arrayEmpleados.add(empleado.getUsuario() + " ---> " + empleado.getRol().toString());
+        }
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, arrayEmpleados);
+        //specify the layout to appear list items
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        //data bind adapter with both spinners
+        empleadoNombreSpinner.setAdapter(adapter);
+        super.onResume();
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -107,7 +152,7 @@ public class LoginActivity extends AppCompatActivity {
     //creamos este metodo para que el ActionBar(la flecha hacia atras) funcione bien
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        DataBaseHelper dbhelper = new DataBaseHelper(getApplicationContext());
+        //DataBaseHelper dbhelper = new DataBaseHelper(getApplicationContext());
         String sd = Environment.getExternalStorageDirectory().toString();
         String sd1 = sd + "/" + "Download/" + DATABASE_NAME;
         File mInput = new File(sd1);
@@ -160,6 +205,7 @@ public class LoginActivity extends AppCompatActivity {
         DataBaseHelper dbhelper = new DataBaseHelper(getApplicationContext());
         Boolean existe = dbhelper.checkDataBase();
         if (existe == true) {
+
             Log.i("FichApp", "LoginActivity- Existe BD");
             File dbFile = getDatabasePath("DBcontrol.db");
             Log.i("FichApp", dbFile.toString());
@@ -168,9 +214,10 @@ public class LoginActivity extends AppCompatActivity {
             //TODO LLAMAR AL ENVIO DEL MAIL PERO EN ESTA OCASION CON
             // POSIBILIDAD DE ELEGIR CORREO DESTINO
             File sd = Environment.getExternalStorageDirectory();
-            String backupDBPath = DATABASE_NAME;
+            String backupDBPath = "Download/" + DATABASE_NAME;
             File backupDB = new File(sd, backupDBPath);
             String test = String.valueOf(backupDB);
+
             Intent intent = new Intent(this, EnviarMailActivity.class);
             intent.putExtra("email", email);
             intent.putExtra("compartir", true);
@@ -204,9 +251,17 @@ public class LoginActivity extends AppCompatActivity {
         File mInput = new File(sd1);
         Log.i("FichApp", "LoginActivity- Existe BD en External memory y puede ser importado");
         try {
-            dbhelper.importDB();
+            // BORRAR BASE DE DATOS ACTUAL - FICHEROS//
+            RegistroEmpresaActivity bd = new RegistroEmpresaActivity();
+            Context context =getApplicationContext();
+            bd.borrarBD(context);
+            // IMPORTAR LOS FICHEROS DE BASE DE DATOS
+            // BDControl.db,BDControl.db-shm,BDControl.db-wal
+            dataBase.importDB();
             Toast.makeText(this, "LA BASE DATOS HA SIDO IMPORTADA", Toast.LENGTH_SHORT).show();
         } catch (IOException e) {
+            Log.i("FichApp", "LoginActivity- Error en import");
+
             e.printStackTrace();
         }
     }
