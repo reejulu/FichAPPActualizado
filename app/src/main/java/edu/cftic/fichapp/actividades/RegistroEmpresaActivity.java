@@ -103,7 +103,7 @@ public class RegistroEmpresaActivity extends AppCompatActivity {
         // La base de datos sera importada en caso de existir el fichero en:
         // /0/Download/DBControl.db
         // y que no tengamos DB local
-        DataBaseHelper dbhelper = new DataBaseHelper(getApplicationContext());
+       // DataBaseHelper dbhelper = new DataBaseHelper(getApplicationContext());
         // SQLiteDatabase db = dbhelper.getWritableDatabase();
         //  Boolean existe = dbhelper.checkDataBase();
 

@@ -203,7 +203,11 @@ public class LoginActivity extends AppCompatActivity {
 
     public void compartir1() {
         DataBaseHelper dbhelper = new DataBaseHelper(getApplicationContext());
+      //  DB.DBH dataBaseHelper = new DB.DBH(getApplicationContext());
+      //  dataBaseHelper.checkDataBase();
         Boolean existe = dbhelper.checkDataBase();
+
+
         if (existe == true) {
 
             Log.i("FichApp", "LoginActivity- Existe BD");
@@ -245,7 +249,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void entrar2() {
-        DataBaseHelper dbhelper = new DataBaseHelper(getApplicationContext());
+        //DataBaseHelper dbhelper = new DataBaseHelper(getApplicationContext());
         String sd = Environment.getExternalStorageDirectory().toString();
         String sd1 = sd + "/" + "Download/" + DATABASE_NAME;
         File mInput = new File(sd1);

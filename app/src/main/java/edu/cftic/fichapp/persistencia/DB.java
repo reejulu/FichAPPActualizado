@@ -4,6 +4,7 @@ import android.app.Application;
 import android.content.Context;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.os.Environment;
 import android.util.Log;
@@ -160,6 +161,21 @@ public class DB extends Application {
             db.execSQL("DROP TABLE IF EXISTS "+ IEmpleadoEsquema.E_TABLA);
             db.execSQL("DROP TABLE IF EXISTS "+ IFichajeEsquema.F_TABLA);
             onCreate(db);
+        }
+
+        //Check database already exist or not
+        public boolean checkDataBase() {
+
+                boolean checkDB = false;
+                try {
+                    String myPath = DATABASE_PATH + DATABASE_NAME;
+                    File dbfile = new File(myPath);
+                    checkDB = dbfile.exists();
+                    // dbfile.delete();
+                } catch (SQLiteException e) {
+                }
+                return checkDB;
+
         }
     }
 }

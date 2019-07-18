@@ -1,8 +1,10 @@
 package edu.cftic.fichapp.actividades;
 
+import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.DividerItemDecoration;
@@ -13,6 +15,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.security.Timestamp;
 import java.util.ArrayList;
@@ -161,17 +164,22 @@ public class ModificarCrearBorrarActivity extends AppCompatActivity {
                 // TODO hay que actualizar BD con el elemento quitado
                 int posicion_tocada = position;
                 empleado = datos.get(posicion_tocada);
-                String jaja = empleado.getNombre().toString();
-                Log.i("FichApp","ModificarCrearBorrarActivity-btnSi-empleado es : "+jaja);
-                bdd.empleados.eliminar(empleado.getId_empleado());
-                datos.remove(position);
+                Context context = getApplicationContext();
 
-                //int id = datos.get(position).getId_empleado();
-                Log.i("FichApp","ModificarCrearBorrarActivity-btnSi-id empleado es: "+empleado.getId_empleado());
-                //db.empleados.eliminar(empleado.getId_empleado());
-               // bdd.empleados.eliminar(id);
-               // bdd.open();
+                Log.i("FichApp", "ModificarCrearBorrarActivity-btnSi-empleado es : " + empleado.getNombre().toString());
 
+                if (empleado.getRol().toString().contains("gestor")) {
+                    Toast.makeText(context, "El empleado: " + empleado.getNombre() + " es gestor y no puede borrarse.", Toast.LENGTH_LONG).show();
+
+                }else {
+
+                    bdd.empleados.eliminar(empleado.getId_empleado());
+
+                    datos.remove(position);
+
+                    Log.i("FichApp", "ModificarCrearBorrarActivity-btnSi-id empleado es: " + empleado.getId_empleado());
+
+                }
                 datos = (ArrayList<Empleado>) bdd.empleados.getEmpleados();
                 Log.i("FichApp","ModificarCrearBorrarActivity-btnSi-datos.size es : "+datos.size());
                 recView = (RecyclerView) findViewById(R.id.RecView);

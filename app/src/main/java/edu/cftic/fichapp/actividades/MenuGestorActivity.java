@@ -59,9 +59,9 @@ public class MenuGestorActivity extends AppCompatActivity {
 
        //      GestorAlarma gestorAlarma = new GestorAlarma(this);
        //      gestorAlarma.programarAlarma();
-        DataBaseHelper dbhelper = new DataBaseHelper(getApplicationContext());
-        SQLiteDatabase db = dbhelper.getWritableDatabase();
-        Boolean existe = dbhelper.checkDataBase();
+       // DataBaseHelper dbhelper = new DataBaseHelper(getApplicationContext());
+      //  SQLiteDatabase db = dbhelper.getWritableDatabase();
+      //  Boolean existe = dbhelper.checkDataBase();
         /*
         if (existe == false){
             Log.i("FichApp","MenuGestorActivity- Existe BD");

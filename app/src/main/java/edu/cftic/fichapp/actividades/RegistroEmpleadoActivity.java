@@ -138,32 +138,40 @@ public class RegistroEmpleadoActivity extends AppCompatActivity {
 
     public void eliminarUsuario(View view) {
 
-
-
         AlertDialog.Builder dialogo1 = new AlertDialog.Builder(this);
         dialogo1.setTitle("Importante");
-        dialogo1.setMessage("El empleado: "+empleado.getNombre() + " va a ser eliminado. ¿Desea continuar?");
-        dialogo1.setCancelable(false);
-        dialogo1.setPositiveButton("Confirmar", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialogo1, int id) {
-                db.empleados.eliminar(empleado.getId_empleado());
-                Log.i("FichApp","RegistroEmpleadoActivity-EliminarUsuario-id empleado es: "+empleado.getId_empleado());
+        if (empleado.getRol().toString().contains("gestor")) {
+            dialogo1.setMessage("El empleado: " + empleado.getNombre() + " No puede ser eliminado es el gestor");
+            dialogo1.setCancelable(true);
+            dialogo1.show();
+
+        }else {
+
+            dialogo1.setMessage("El empleado: " + empleado.getNombre() + " va a ser eliminado. ¿Desea continuar?");
+            dialogo1.setCancelable(false);
+            dialogo1.setPositiveButton("Confirmar", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialogo1, int id) {
+                    db.empleados.eliminar(empleado.getId_empleado());
+                    Log.i("FichApp", "RegistroEmpleadoActivity-EliminarUsuario-id empleado es: " + empleado.getId_empleado());
 
 
-                //Intent intent = new Intent(getApplicationContext(), MenuGestorActivity.class);
-                //Intent intent = new Intent(getApplicationContext(),ModificarCrearBorrarActivity.class);
-                //startActivity(intent);
-                finish();
-            }
+                    //Intent intent = new Intent(getApplicationContext(), MenuGestorActivity.class);
+                    //Intent intent = new Intent(getApplicationContext(),ModificarCrearBorrarActivity.class);
+                    //startActivity(intent);
+                    finish();
+                }
 
-        });
-        dialogo1.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialogo1, int id) {
-                // Se cancela la operación de elmiminación
-            }
-        });
-        dialogo1.show();
+            });
 
+            dialogo1.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialogo1, int id) {
+                    // Se cancela la operación de elmiminación
+                }
+            });
+
+
+            dialogo1.show();
+        }
        // Intent intent = new Intent(this, MenuGestorActivity.class);
        // startActivity(intent);
     }
