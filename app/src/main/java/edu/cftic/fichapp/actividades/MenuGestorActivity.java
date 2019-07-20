@@ -38,9 +38,12 @@ public class MenuGestorActivity extends AppCompatActivity {
             //VIENE DE RegistorEmpleadoActivity , tras borrar o modificar
         }else {
             u = (Empleado) getIntent().getExtras().get(Constantes.EMPLEADO);
-
-            TextView empleado = findViewById(R.id.txtEmpleado);
-            empleado.setText(u.getNombre().toString());
+            if (u == null){
+                // viene desde menu gestor , no hay que poner nombre
+            }else {
+                TextView empleado = findViewById(R.id.txtEmpleado);
+                empleado.setText(u.getNombre().toString());
+            }
         }
 
         // recoger la empresa y setear el logo en el boton de empresa
@@ -119,7 +122,10 @@ public class MenuGestorActivity extends AppCompatActivity {
 
         Intent intent = new Intent(this,RegistroEmpresaActivity.class);
         intent.putExtra(EMPLEADO,u);
+        Boolean DesdemenuGestor = true;
+        intent.putExtra("DesdeDonde",DesdemenuGestor);
         startActivity(intent);
+        finish();
     }
 
     public void consulta(View view) {

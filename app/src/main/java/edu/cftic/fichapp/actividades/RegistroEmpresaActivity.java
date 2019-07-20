@@ -73,6 +73,7 @@ public class RegistroEmpresaActivity extends AppCompatActivity {
     Button btnNo;
     private Empleado u = null;
     Intent intent2;
+    Boolean DesdeDonde ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,7 +92,7 @@ public class RegistroEmpresaActivity extends AppCompatActivity {
         //Recuperación de los datos del Intent
         Intent intent = getIntent();
         empleado = (Empleado) intent.getSerializableExtra(Constantes.EMPLEADO);
-
+        DesdeDonde = intent.getBooleanExtra("DesdeDonde",false);
         logicaBotonesGestor();
         desactivarModoEstricto();
         // Esta instrucción pide los permisos para acceder a galería de fotos.
@@ -112,22 +113,23 @@ public class RegistroEmpresaActivity extends AppCompatActivity {
         File mInput = new File(sd1);
         btnSi = findViewById(R.id.btnsi);
         btnNo = findViewById(R.id.btnno);
+        if (DesdeDonde == false) {
+            if (mInput.exists() == true) {
+                //TODO crear boton para preguntar si se desea importar los datos
+                // esto puede ser un framelayout .
+                TextView txt1 = findViewById(R.id.txtEncontradoFicheroDB);
+                txt1.setVisibility(View.VISIBLE);
+                TextView txt2 = findViewById(R.id.txtConfirmarImportar);
+                txt2.setVisibility(View.VISIBLE);
+                btnSi = findViewById(R.id.btnsi);
+                btnSi.setVisibility(View.VISIBLE);
+                btnNo = findViewById(R.id.btnno);
+                btnNo.setVisibility(View.VISIBLE);
+                LinearLayout uno = findViewById(R.id.linearoot);
+                uno.setVisibility(View.INVISIBLE);
 
-        if (mInput.exists()== true){
-            //TODO crear boton para preguntar si se desea importar los datos
-            // esto puede ser un framelayout .
-            TextView txt1 = findViewById(R.id.txtEncontradoFicheroDB);
-            txt1.setVisibility(View.VISIBLE);
-            TextView txt2 = findViewById(R.id.txtConfirmarImportar);
-            txt2.setVisibility(View.VISIBLE);
-            btnSi = findViewById(R.id.btnsi);
-            btnSi.setVisibility(View.VISIBLE);
-            btnNo = findViewById(R.id.btnno);
-            btnNo.setVisibility(View.VISIBLE);
-            LinearLayout uno = findViewById(R.id.linearoot);
-            uno.setVisibility(View.INVISIBLE);
 
-
+            }
         }
 
 

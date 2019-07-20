@@ -92,8 +92,8 @@ public class RegistroEntradaSalida extends AppCompatActivity implements AdapterV
         cronoFichaje.start();
 
 
-        Log.d("MIAPP", "Entrada: " + ultimoFichaje.getFechainicio());
-        Log.d("MIAPP", "Salida: " + ultimoFichaje.getFechafin());
+        Log.i("FichApp", "RegistroEntradaSalida-Entrada: " + ultimoFichaje.getFechainicio());
+        Log.i("FichApp", "RegistroEntradaSalida-Salida: " + ultimoFichaje.getFechafin());
 
 
         // Establecemos el tipo de fichaje si es de salida o de entrada
@@ -224,7 +224,7 @@ public class RegistroEntradaSalida extends AppCompatActivity implements AdapterV
                 String strDateFormat = "HH:mm dd-MMMM-YYYY"; // El formato de fecha está especificado
                 SimpleDateFormat objSDF = new SimpleDateFormat(strDateFormat); // La cadena de formato de fecha se pasa como un argumento al objeto
                 String ultimoFichajeFormateado = objSDF.format(ultimoFichaje.getFechainicio());
-
+                Log.i("FichApp","RegistroEntradaSalida-ultimofichajeFormateado - es :"+ultimoFichajeFormateado);
                 horaEntrada.setVisibility(View.VISIBLE);
                 horaEntrada.setText(ultimoFichajeFormateado);
                 botonSalida.setEnabled(true);
@@ -349,7 +349,7 @@ public class RegistroEntradaSalida extends AppCompatActivity implements AdapterV
             }
         }
         ultimoFichaje = ul;
-        Log.i("APPK", "" + ul.toString());
+        Log.i("FichApp", "RegistroEntradaSalida" + ul.toString());
     }
 
     private void inicializarVistas () {
